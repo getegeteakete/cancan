@@ -456,12 +456,26 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   #toTop{bottom:80px}
   .concierge-fab{bottom:80px}
   .chat{bottom:80px;height:min(520px,calc(100vh - 150px))}
+  .scroll-hint{display:none}
+  .hero-dots{bottom:98px}
 }
 @media(max-width:560px){
-  header{padding:0 20px}
-  .container{padding:0 22px}
-  .section{padding:84px 0}
-  .about-figure img{height:380px}
+  header{padding:0 20px;height:60px}
+  header.scrolled{height:56px}
+  .brand-logo{height:34px}
+  .container{padding:0 20px}
+  .section{padding:64px 0}
+  .sec-title{font-size:clamp(30px,8vw,44px)}
+  .about-figure img{height:auto;max-height:78vh}
+  .about-figure::after{inset:10px -10px -10px 10px}
+  .lead{font-size:19px}
+  .about-body p{font-size:15px}
+  .menu-cat h3{font-size:23px}
+  .mitem{font-size:14.5px;padding:11px 0}
+  .faq-item summary{font-size:16px;padding:20px 2px}
+  .btn-ghost,.btn-solid{padding:16px 26px}
+  .book-bar a{padding:15px 8px;font-size:14px}
+  .cta{padding:90px 0}
   .hero-cta{flex-direction:column;width:100%;max-width:280px;margin-left:auto;margin-right:auto}
   .hero-cta a{justify-content:center}
   .photo-grid{grid-template-columns:1fr;grid-auto-rows:230px}
@@ -810,7 +824,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 
 <!-- MOBILE BOOKING BAR -->
 <div class="book-bar">
-  <a class="bb-map" href="https://maps.app.goo.gl/XTVVBCYCCG18QL4N6" target="_blank" rel="noopener" aria-label="地図"><i class="fas fa-location-arrow"></i></a>
+  <a class="bb-map" href="https://maps.app.goo.gl/XTVVBCYCCG18QL4N6" target="_blank" rel="noopener" aria-label="地図を開く"><i class="fas fa-map-location-dot"></i></a>
   <a class="bb-book" href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener"><i class="fas fa-calendar-check"></i> ホットペッパーで予約</a>
 </div>
 

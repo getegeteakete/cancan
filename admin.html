@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>管理画面 | カンティーナ赤坂 SNS記事ジェネレーター</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+  --ink:#0c0906;--ink-2:#14100a;--ink-3:#1d160e;
+  --line:rgba(207,58,55,0.26);--line-soft:rgba(207,58,55,0.13);
+  --red:#cf3a37;--red-2:#ef7a72;--cream:#efe7d6;--muted:#a3947c;
+  --serif:'Cormorant Garamond','Shippori Mincho',serif;
+  --mincho:'Shippori Mincho',serif;--sans:'Jost',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--mincho);background:var(--ink);color:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:var(--red-2)}
+.wrap{max-width:900px;margin:0 auto;padding:40px 22px 80px}
+.topbar{display:flex;align-items:center;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--line-soft);margin-bottom:34px}
+.topbar .mark{font-family:var(--serif);font-size:26px;color:var(--cream)}
+.topbar .mark b{color:var(--red);font-weight:500}
+.topbar .tag{font-family:var(--sans);font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--red);margin-left:auto}
+h1{font-family:var(--serif);font-weight:500;font-size:34px;margin-bottom:6px}
+.sub{color:var(--muted);font-size:13.5px;margin-bottom:30px}
+.card{background:var(--ink-2);border:1px solid var(--line-soft);padding:26px;margin-bottom:24px}
+label{display:block;font-family:var(--sans);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+label:first-child{margin-top:0}
+input,select,textarea{
+  width:100%;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);
+  padding:13px 14px;font-family:var(--mincho);font-size:15px;outline:none;transition:border-color .3s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:70px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{
+  flex:1;min-width:120px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);
+  padding:12px;font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.seg button.active{background:var(--red);border-color:var(--red);color:#fff}
+.seg button i{font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-go{
+  width:100%;margin-top:24px;background:var(--red);border:1px solid var(--red);color:#fff;
+  padding:16px;font-family:var(--sans);font-size:14px;letter-spacing:0.1em;cursor:pointer;transition:background .3s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-go:hover{background:#b62e2b}
+.btn-go:disabled{opacity:.5;cursor:not-allowed}
+.err{color:#ff8a80;font-size:13px;margin-top:14px;min-height:18px}
+.results{margin-top:8px}
+.post{background:var(--ink-2);border:1px solid var(--line-soft);border-left:2px solid var(--red);padding:20px;margin-bottom:16px}
+.post .body{white-space:pre-wrap;font-size:15px;line-height:1.9;color:#f2ece0}
+.post .tags{margin-top:12px;color:var(--red-2);font-size:13.5px;word-break:break-word}
+.post .actions{display:flex;gap:10px;margin-top:16px}
+.post .actions button{
+  font-family:var(--sans);font-size:12px;letter-spacing:0.08em;color:var(--cream);
+  background:none;border:1px solid var(--line);padding:9px 16px;cursor:pointer;transition:all .25s;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.post .actions button:hover{border-color:var(--red);color:var(--red-2)}
+.count-tag{font-family:var(--sans);font-size:11px;color:var(--muted)}
+.loading{display:none;text-align:center;padding:30px;color:var(--muted)}
+.loading.on{display:block}
+.spinner{width:26px;height:26px;border:2px solid var(--line);border-top-color:var(--red);border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gate{max-width:420px;margin:80px auto;text-align:center}
+.gate h1{margin-bottom:8px}
+.gate .card{text-align:left}
+.hint{font-family:var(--sans);font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7}
+.hide{display:none}
+.usage{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;
+  background:var(--ink-2);border:1px solid var(--line-soft);border-left:2px solid var(--red);
+  padding:14px 18px;margin-bottom:24px;
+}
+.u-item{display:flex;flex-direction:column;gap:2px}
+.u-label{font-family:var(--sans);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
+.u-val{font-family:var(--sans);font-size:16px;color:var(--red-2);font-weight:500}
+.u-reset{margin-left:auto;font-family:var(--sans);font-size:11px;color:var(--muted);background:none;border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:all .25s}
+.u-reset:hover{border-color:var(--red);color:var(--red-2)}
+.u-note{width:100%;font-family:var(--sans);font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.6}
+@media(max-width:560px){.row{grid-template-columns:1fr}.seg button{min-width:calc(50% - 4px)}}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- パスワードゲート -->
+<div id="gate" class="gate">
+  <h1>Cantina <span style="color:var(--red)">Admin</span></h1>
+  <p class="sub">管理画面にアクセスするにはパスワードを入力してください。</p>
+  <div class="card">
+    <label>パスワード</label>
+    <input id="pw" type="password" placeholder="ADMIN_PASSWORD" autocomplete="current-password">
+    <button class="btn-go" id="gateBtn"><i class="fas fa-unlock"></i> 入室する</button>
+    <div class="err" id="gateErr"></div>
+    <p class="hint">※ Vercelの環境変数 <b>ADMIN_PASSWORD</b> と同じ値を入力します。未設定の場合は先にVercelで設定してください。</p>
+  </div>
+</div>
+
+<!-- 本体 -->
+<div id="app" class="wrap hide">
+  <div class="topbar">
+    <span class="mark">Cantina <b>Akasaka</b></span>
+    <span class="tag">SNS Studio</span>
+  </div>
+  <h1>SNS宣伝記事ジェネレーター</h1>
+  <p class="sub">テーマを入れて生成すると、各SNS向けの投稿文をAI（Claude）が作成します。コピーしてそのまま投稿できます。</p>
+
+  <div class="usage" id="usage">
+    <div class="u-item"><span class="u-label">今回</span><span class="u-val" id="uNow">—</span></div>
+    <div class="u-item"><span class="u-label">累計（この端末）</span><span class="u-val" id="uTotal">$0.0000</span></div>
+    <div class="u-item"><span class="u-label">トークン</span><span class="u-val" id="uTok">—</span></div>
+    <button id="uReset" class="u-reset">累計リセット</button>
+    <div class="u-note">※ 生成ごとの推定額です（Haiku: 入力$1／出力$5 per 100万トークン）。累計はこの端末内のみの記録で、正確な請求は <a href="https://console.anthropic.com/settings/usage" target="_blank" rel="noopener">Anthropicコンソール</a> でご確認ください。円は約1ドル=155円換算の目安です。</div>
+  </div>
+
+  <div class="card">
+    <label>プラットフォーム</label>
+    <div class="seg" id="platform">
+      <button data-v="instagram" class="active"><i class="fab fa-instagram"></i> Instagram</button>
+      <button data-v="x"><i class="fab fa-x-twitter"></i> X (Twitter)</button>
+      <button data-v="line"><i class="fab fa-line"></i> LINE配信</button>
+      <button data-v="google"><i class="fab fa-google"></i> Google投稿</button>
+    </div>
+
+    <label>テーマ・ネタ（何を宣伝する？）</label>
+    <textarea id="topic" placeholder="例：熟成牛のステーキが人気です／山崎12年 入荷しました／週末の予約受付中／雨の日の隠れ家として"></textarea>
+
+    <div class="row">
+      <div>
+        <label>トーン</label>
+        <select id="tone">
+          <option value="落ち着いた大人の雰囲気">落ち着いた大人</option>
+          <option value="カジュアルで親しみやすい">カジュアル・親しみ</option>
+          <option value="高級感・特別感を強調">高級感・特別感</option>
+          <option value="ワクワクする楽しい雰囲気">楽しい・ワクワク</option>
+        </select>
+      </div>
+      <div>
+        <label>生成数</label>
+        <select id="count">
+          <option value="2">2案</option>
+          <option value="3" selected>3案</option>
+          <option value="4">4案</option>
+          <option value="5">5案</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-go" id="go"><i class="fas fa-wand-magic-sparkles"></i> 記事を生成する</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="loading" id="loading"><div class="spinner"></div>AIが記事を作成中です…</div>
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+  var PW_KEY='cantina_admin_pw';
+  var gate=document.getElementById('gate'),app=document.getElementById('app');
+  var platform='instagram';
+
+  // 既にセッションに保存があればゲートをスキップ
+  if(sessionStorage.getItem(PW_KEY)){ gate.classList.add('hide'); app.classList.remove('hide'); }
+
+  document.getElementById('gateBtn').addEventListener('click',enter);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')enter();});
+  function enter(){
+    var v=document.getElementById('pw').value.trim();
+    if(!v){document.getElementById('gateErr').textContent='パスワードを入力してください。';return;}
+    sessionStorage.setItem(PW_KEY,v);
+    gate.classList.add('hide'); app.classList.remove('hide');
+  }
+
+  // プラットフォーム選択
+  document.getElementById('platform').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    platform=b.getAttribute('data-v');
+    this.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');
+  });
+
+  var go=document.getElementById('go'),loading=document.getElementById('loading'),
+      results=document.getElementById('results'),err=document.getElementById('err');
+
+  // ===== 使用料表示 =====
+  var COST_KEY='cantina_api_cost_total', JPY=155;
+  function fmtUSD(v){return '$'+Number(v||0).toFixed(4);}
+  function fmtJPY(v){return '約¥'+Math.round((v||0)*JPY).toLocaleString();}
+  function renderTotal(){
+    var t=parseFloat(localStorage.getItem(COST_KEY)||'0');
+    document.getElementById('uTotal').textContent=fmtUSD(t)+' / '+fmtJPY(t);
+  }
+  function addUsage(u){
+    if(!u)return;
+    document.getElementById('uNow').textContent=fmtUSD(u.cost_usd)+' / '+fmtJPY(u.cost_usd);
+    document.getElementById('uTok').textContent='入力 '+(u.input||0)+' / 出力 '+(u.output||0);
+    var t=parseFloat(localStorage.getItem(COST_KEY)||'0')+(u.cost_usd||0);
+    localStorage.setItem(COST_KEY,String(t)); renderTotal();
+  }
+  document.getElementById('uReset').addEventListener('click',function(){
+    localStorage.setItem(COST_KEY,'0'); renderTotal();
+    document.getElementById('uNow').textContent='—'; document.getElementById('uTok').textContent='—';
+  });
+  renderTotal();
+
+  go.addEventListener('click',function(){
+    var topic=document.getElementById('topic').value.trim();
+    if(!topic){err.textContent='テーマ・ネタを入力してください。';return;}
+    err.textContent=''; results.innerHTML=''; loading.classList.add('on'); go.disabled=true;
+
+    fetch('/api/generate-sns',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        platform:platform,topic:topic,
+        tone:document.getElementById('tone').value,
+        count:document.getElementById('count').value,
+        password:sessionStorage.getItem(PW_KEY)
+      })
+    })
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+    .then(function(o){
+      loading.classList.remove('on'); go.disabled=false;
+      if(!o.ok){
+        err.textContent=(o.d&&o.d.error)||'生成に失敗しました。';
+        if(o.d&&/パスワード/.test(o.d.error||'')){sessionStorage.removeItem(PW_KEY);}
+        return;
+      }
+      var posts=(o.d&&o.d.posts)||[];
+      if(o.d&&o.d.usage) addUsage(o.d.usage);
+      if(!posts.length){err.textContent='結果が空でした。テーマを変えて再試行してください。';return;}
+      posts.forEach(function(p,i){render(p,i);});
+    })
+    .catch(function(){loading.classList.remove('on');go.disabled=false;err.textContent='通信エラーが発生しました。';});
+  });
+
+  function render(p,i){
+    var tags=(p.hashtags||[]).join(' ');
+    var full=(p.caption||'')+(tags?('\n\n'+tags):'');
+    var div=document.createElement('div');div.className='post';
+    var esc=function(s){return (s||'').replace(/</g,'&lt;');};
+    div.innerHTML=
+      '<div class="count-tag">案 '+(i+1)+'</div>'+
+      '<div class="body">'+esc(p.caption)+'</div>'+
+      (tags?'<div class="tags">'+esc(tags)+'</div>':'')+
+      '<div class="actions">'+
+        '<button class="copyBtn"><i class="far fa-copy"></i> 全文コピー</button>'+
+      '</div>';
+    div.querySelector('.copyBtn').addEventListener('click',function(){
+      var btn=this;
+      navigator.clipboard.writeText(full).then(function(){
+        btn.innerHTML='<i class="fas fa-check"></i> コピーしました';
+        setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 全文コピー';},1600);
+      });
+    });
+    results.appendChild(div);
+  }
+</script>
+</body>
+</html>
