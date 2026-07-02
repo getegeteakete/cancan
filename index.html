@@ -500,6 +500,706 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   .hero-eyebrow,.hero-title,.hero-sub,.hero-line,.hero-cta,.scroll-hint{opacity:1;animation:none}
 }
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ####################################################################
+   MULTI-AGENT DESIGN ELEVATION LAYERS (appended; source order wins)
+   1) Atmosphere & depth  2) Typography & rhythm  3) Motion & interactions
+   #################################################################### */
+
+/* ============================================================================
+   CANTINA AKASAKA — ATMOSPHERE, MATERIALITY & DEPTH
+   Appended after the existing <style>. Source order wins the cascade.
+   ----------------------------------------------------------------------------
+   (1) HTML TO ADD TO <body>:
+       NONE REQUIRED.
+       The film-grain and vignette are rendered with body::before / body::after,
+       which are unused by the existing stylesheet — no markup changes needed.
+       (Everything here is pure CSS + an inline SVG data-URI. No external assets.)
+
+   (2) WHAT CHANGED (5 lines):
+       - Added a fixed 35mm film-grain overlay (inline SVG turbulence) + a
+         cinematic edge vignette, both pointer-events:none, grain gently drifts.
+       - Layered warm "candlelight" radial glows behind hero, about and CTA
+         using the ember palette (--gold / --ember / --gold-2), very low alpha.
+       - Gave real depth via layered box-shadows: about figure, gallery cells,
+         menu columns, info cards, chat panel and the scrolled header glass.
+       - Refined header + chat glassmorphism (deeper blur, saturate, inner
+         hairline highlight, warm rim) so surfaces feel lit from within.
+       - Melted the gallery/info sections into their neighbours with soft
+         top/bottom gradient seams instead of hard tonal cuts.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. FILM GRAIN — warm 35mm shimmer, fixed, above content / below chrome
+   --------------------------------------------------------------------------- */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-150px;                 /* oversize so the drift never reveals an edge */
+  z-index:45;                   /* above content, below toTop/fab/chat/header  */
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:300px 300px;
+  opacity:0.055;
+  mix-blend-mode:overlay;
+  will-change:transform;
+  animation:grainDrift 5.6s steps(6) infinite;
+}
+@keyframes grainDrift{
+  0%   {transform:translate3d(0,0,0)}
+  16%  {transform:translate3d(-7px,5px,0)}
+  33%  {transform:translate3d(5px,-8px,0)}
+  50%  {transform:translate3d(-6px,-4px,0)}
+  66%  {transform:translate3d(8px,6px,0)}
+  83%  {transform:translate3d(-4px,7px,0)}
+  100% {transform:translate3d(0,0,0)}
+}
+
+/* ---------------------------------------------------------------------------
+   2. CINEMATIC VIGNETTE — soft darkened edges + faint top/bottom fall-off
+   --------------------------------------------------------------------------- */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:44;
+  pointer-events:none;
+  background:
+    radial-gradient(135% 120% at 50% 42%,
+        transparent 55%,
+        rgba(12,9,6,0.34) 82%,
+        rgba(6,4,3,0.72) 100%),
+    linear-gradient(to bottom,
+        rgba(6,4,3,0.34) 0%,
+        transparent 12%,
+        transparent 88%,
+        rgba(6,4,3,0.44) 100%);
+}
+
+/* ---------------------------------------------------------------------------
+   3. AMBIENT CANDLELIGHT GLOWS — hero / about / cta (ember palette, low alpha)
+   --------------------------------------------------------------------------- */
+/* HERO — enrich existing overlay (background only) while keeping legibility */
+.hero::before{
+  background:
+    radial-gradient(90% 70% at 50% 30%, rgba(239,122,114,0.14), transparent 46%),
+    radial-gradient(120% 92% at 50% 16%, rgba(207,58,55,0.18), transparent 52%),
+    radial-gradient(85% 65% at 50% 110%, rgba(168,58,44,0.22), transparent 56%),
+    linear-gradient(to bottom,
+        rgba(12,9,6,0.52) 0%,
+        rgba(12,9,6,0.32) 42%,
+        rgba(12,9,6,0.94) 100%);
+}
+
+/* ABOUT — two off-axis warm pools behind the copy & figure */
+#about{
+  background:
+    radial-gradient(58% 80% at 20% 38%, rgba(168,58,44,0.11), transparent 60%),
+    radial-gradient(50% 62% at 90% 72%, rgba(207,58,55,0.06), transparent 62%);
+}
+
+/* CTA — enrich existing radial (background only) with a low rim from above */
+.cta::before{
+  background:
+    radial-gradient(72% 120% at 50% 100%, rgba(207,58,55,0.17), transparent 60%),
+    radial-gradient(52% 82% at 50% 0%, rgba(168,58,44,0.10), transparent 56%);
+}
+
+/* ---------------------------------------------------------------------------
+   4. DEPTH — layered box-shadows (surfaces lit from within a dark room)
+   --------------------------------------------------------------------------- */
+/* About figure — grounded, with a faint ember bloom beneath */
+.about-figure img{
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.42),
+    0 22px 48px rgba(0,0,0,0.50),
+    0 44px 96px -34px rgba(168,58,44,0.28);
+}
+
+/* Gallery cells — recessed tiles floating over the ink-2 field */
+.cell{
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.42),
+    0 16px 40px -14px rgba(0,0,0,0.58);
+}
+
+/* Menu columns — low-relief translucent panels */
+.menu-cat{
+  padding:30px 30px 22px;
+  background:linear-gradient(180deg, rgba(29,22,14,0.34), rgba(12,9,6,0.10));
+  border:1px solid var(--line-soft);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.34),
+    0 20px 50px -26px rgba(0,0,0,0.60),
+    inset 0 1px 0 rgba(239,231,214,0.03);
+}
+
+/* Info cards — raised panels with a warm hairline seam */
+.info-card{
+  padding:34px 34px 28px;
+  background:linear-gradient(180deg, rgba(29,22,14,0.40), rgba(12,9,6,0.14));
+  border:1px solid var(--line-soft);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.40),
+    0 24px 60px -28px rgba(0,0,0,0.60),
+    inset 0 1px 0 rgba(239,231,214,0.04);
+}
+
+/* ---------------------------------------------------------------------------
+   5. GLASSMORPHISM — refined header + chat (blur, saturate, inner highlight)
+   --------------------------------------------------------------------------- */
+header.scrolled{
+  background:linear-gradient(180deg, rgba(20,16,10,0.72), rgba(12,9,6,0.86));
+  backdrop-filter:blur(18px) saturate(1.15);
+  -webkit-backdrop-filter:blur(18px) saturate(1.15);
+  border-bottom-color:rgba(207,58,55,0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(239,231,214,0.05),
+    0 10px 30px -10px rgba(0,0,0,0.60),
+    0 1px 26px rgba(168,58,44,0.06);
+}
+
+.chat{
+  background:linear-gradient(180deg, rgba(29,22,14,0.82), rgba(12,9,6,0.90));
+  backdrop-filter:blur(22px) saturate(1.10);
+  -webkit-backdrop-filter:blur(22px) saturate(1.10);
+  box-shadow:
+    inset 0 1px 0 rgba(239,231,214,0.06),
+    0 30px 80px rgba(0,0,0,0.62),
+    0 0 0 1px rgba(207,58,55,0.10);
+}
+
+/* ---------------------------------------------------------------------------
+   6. SECTION SEAMS — melt the ink-2 sections into their ink neighbours
+   --------------------------------------------------------------------------- */
+.gallery::before,.gallery::after,
+.info::before,.info::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  height:100px;
+  z-index:0;                    /* above the section's own ink-2 fill, below content */
+  pointer-events:none;
+}
+.gallery::before,.info::before{
+  top:0;
+  background:linear-gradient(to bottom, var(--ink), transparent);
+}
+.gallery::after,.info::after{
+  bottom:0;
+  background:linear-gradient(to top, var(--ink), transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   7. MOBILE — keep seams inside padding; ease shadows on small screens
+   --------------------------------------------------------------------------- */
+@media(max-width:560px){
+  .gallery::before,.gallery::after,
+  .info::before,.info::after{height:52px}
+  .menu-cat{padding:24px 22px 18px}
+  .info-card{padding:26px 24px 22px}
+}
+
+/* ---------------------------------------------------------------------------
+   8. REDUCED MOTION — grain must not animate (glows/shadows stay, static)
+   --------------------------------------------------------------------------- */
+@media(prefers-reduced-motion:reduce){
+  body::before{animation:none}
+}
+
+/* ============================================================================
+   CANTINA AKASAKA — Typographic refinement layer
+   Appended after the existing <style>; source order wins the cascade.
+   Scope: type, hierarchy & spatial rhythm ONLY (no shadow/bg/filter/transition).
+   ----------------------------------------------------------------------------
+   HTML ADDITIONS NEEDED: none.
+     - Drop-cap is done with ::first-letter on the first About body paragraph.
+     - Menu category numerals (01–04) are generated with CSS counters.
+     Both work against the existing markup unchanged.
+   ----------------------------------------------------------------------------
+   CHANGE SUMMARY (5 lines):
+   1. Set one deliberate modular scale; display type tracked tighter, small
+      caps/eyebrows tracked wider; text-wrap:balance on every heading.
+   2. Split JP vs Latin metrics: Japanese gets generous leading + no faux-italic
+      (Shippori has no true italic); Cormorant display set tight & elegant.
+   3. Editorial touches: drop-cap on the About lead paragraph, refined upright
+      pull-quote lead, numbered menu categories, tighter dot-leaders + tabular prices.
+   4. Consistent vertical rhythm: section padding, eyebrow→title→rule spacing,
+      menu/info/faq/footer line-heights normalised.
+   5. Responsive re-tune at 900/700/560 so nothing feels cramped or oversized.
+   ============================================================================ */
+
+/* ---- base rhythm ---------------------------------------------------------- */
+body{
+  line-height:1.9;            /* JP running text wants air */
+  letter-spacing:0.012em;
+  word-spacing:0.02em;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:"palt" 1;   /* proportional metrics for JP punctuation */
+}
+
+/* consistent section rhythm */
+.section{padding:128px 0}
+
+/* ---- eyebrow (small caps / label) ---------------------------------------- */
+.eyebrow{
+  font-size:10.5px;
+  font-weight:500;
+  letter-spacing:0.46em;      /* the smaller the type, the wider the track */
+  line-height:1;
+  text-indent:0.46em;         /* optical: compensate trailing tracking */
+}
+.eyebrow.center{text-indent:0}
+.eyebrow::before,
+.eyebrow.center::after{width:30px;opacity:0.6}
+
+/* ---- section title (display serif, mixed JP/Latin) ----------------------- */
+.sec-title{
+  font-size:clamp(33px,5.4vw,56px);
+  line-height:1.08;
+  letter-spacing:0.006em;     /* near-neutral; JP glyphs don't want negative */
+  text-wrap:balance;
+  margin-top:20px;
+}
+/* Japanese accent spans: kill faux-oblique (Shippori has no real italic),
+   keep the colour as the differentiator, upright & refined. */
+.sec-title .accent{
+  font-style:normal;
+  font-weight:500;
+  letter-spacing:0.02em;
+}
+
+/* ---- rule spacing --------------------------------------------------------- */
+.rule{margin:24px 0 28px}
+
+/* ---- HERO ----------------------------------------------------------------- */
+.hero-eyebrow{
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:0.56em;
+  text-indent:0.56em;
+  line-height:1;
+  margin-bottom:26px;
+}
+.hero-title{
+  font-weight:400;
+  font-size:clamp(72px,14.5vw,164px);
+  line-height:0.9;
+  letter-spacing:0.008em;     /* large display → tight & confident */
+  text-wrap:balance;
+}
+.hero-title em{
+  font-style:italic;          /* Latin "Akasaka" — true italic is correct here */
+  letter-spacing:0.004em;
+}
+.hero-sub{
+  font-weight:500;
+  font-size:clamp(14px,2.2vw,19px);
+  letter-spacing:0.46em;
+  text-indent:0.46em;
+  line-height:1.6;
+  margin-top:24px;
+}
+.scroll-hint{font-size:9.5px;letter-spacing:0.46em;text-indent:0.46em}
+
+/* ---- ABOUT: refined lead + drop-cap -------------------------------------- */
+/* The lead is Japanese — set upright (no faux italic), as an editorial pull-quote. */
+.lead{
+  font-family:var(--serif);
+  font-style:normal;
+  font-weight:500;
+  font-size:clamp(20px,2.5vw,26px);
+  line-height:1.66;
+  letter-spacing:0.03em;
+  text-wrap:balance;
+  margin:28px 0 24px;
+}
+.about-body p{
+  font-size:15.5px;
+  line-height:1.95;
+  letter-spacing:0.015em;
+  margin-bottom:15px;
+}
+/* Drop-cap on the first running paragraph after the lead (JP editorial 級上げ). */
+.about-body .lead + p::first-letter{
+  float:left;
+  font-family:var(--mincho);
+  font-weight:600;
+  font-size:3.3em;
+  line-height:0.78;
+  padding:0.04em 0.12em 0 0;
+  color:var(--gold-2);
+  letter-spacing:0;
+}
+.badge{font-size:10.5px;letter-spacing:0.16em;line-height:1}
+.about-figure .tag{font-size:10.5px;letter-spacing:0.3em}
+
+/* ---- GALLERY -------------------------------------------------------------- */
+.gallery-head{margin-bottom:52px}
+.cell .cap{font-size:10.5px;letter-spacing:0.26em}
+
+/* ---- MENU: numbered categories, dot-leaders, tabular prices -------------- */
+.menu-head{margin-bottom:22px}
+.charge{font-size:11.5px;letter-spacing:0.16em}
+
+.menu-grid{
+  counter-reset:menucat;
+  gap:52px 76px;
+  margin-top:68px;
+}
+.menu-cat{counter-increment:menucat}
+.menu-cat h3{
+  font-weight:500;
+  font-size:25px;
+  line-height:1.2;
+  letter-spacing:0.03em;
+  gap:14px;
+  padding-bottom:15px;
+  margin-bottom:16px;
+}
+/* editorial numeral before each category name */
+.menu-cat h3::before{
+  content:counter(menucat,decimal-leading-zero);
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:0.14em;
+  line-height:1;
+  color:var(--gold);
+  align-self:center;
+}
+.menu-cat h3 .en{
+  font-size:10px;
+  letter-spacing:0.3em;
+  font-weight:500;
+}
+.mitem{
+  gap:10px;
+  padding:8px 0;
+  font-size:15px;
+  line-height:1.5;
+}
+.mitem .name{letter-spacing:0.02em}
+.mitem .dots{
+  border-bottom-style:dotted;
+  transform:translateY(-3px);
+}
+.mitem .price{
+  font-size:13.5px;
+  letter-spacing:0.02em;
+  font-variant-numeric:tabular-nums;   /* prices align optically */
+  font-feature-settings:"tnum" 1;
+}
+.menu-note{font-size:11px;letter-spacing:0.14em;line-height:1.7}
+
+/* ---- INFO ----------------------------------------------------------------- */
+.info-grid{margin-top:60px}
+.info-card h3{
+  font-weight:500;
+  font-size:23px;
+  line-height:1.25;
+  letter-spacing:0.03em;
+  margin-bottom:6px;
+  padding-bottom:18px;
+}
+.ilabel{font-size:10.5px;letter-spacing:0.22em;line-height:1.4}
+.ivalue{font-size:15px;line-height:1.75;letter-spacing:0.015em}
+.ivalue small{font-size:12px;letter-spacing:0.01em;line-height:1.6}
+.badge-open{font-size:9.5px;letter-spacing:0.16em}
+.access-sub{font-size:14px;letter-spacing:0.08em;line-height:1.8;text-wrap:balance}
+
+/* ---- FAQ ------------------------------------------------------------------ */
+.faq-list{margin-top:52px}
+.faq-item summary{
+  font-size:17px;
+  font-weight:500;
+  line-height:1.5;
+  letter-spacing:0.02em;
+  padding:24px 4px;
+}
+.faq-a{
+  font-size:14.5px;
+  line-height:1.95;
+  letter-spacing:0.015em;
+  padding:0 4px 26px;
+}
+
+/* ---- CTA ------------------------------------------------------------------ */
+.cta-title{
+  font-weight:400;
+  font-size:clamp(38px,6.6vw,70px);
+  line-height:1.08;
+  letter-spacing:0.01em;
+  text-wrap:balance;
+}
+.cta-title em{           /* Japanese — upright, colour carries the emphasis */
+  font-style:normal;
+  letter-spacing:0.03em;
+}
+.cta-sub{font-size:15px;letter-spacing:0.12em;line-height:1.8;text-wrap:balance}
+
+/* ---- FOOTER --------------------------------------------------------------- */
+.f-en{font-size:27px;letter-spacing:0.05em;line-height:1.1}
+.f-ja{font-size:10px;letter-spacing:0.42em;line-height:1.4}
+.f-about{font-size:13px;line-height:1.95;letter-spacing:0.015em;margin-top:18px}
+.footer-col h4{font-size:10.5px;letter-spacing:0.26em;line-height:1;margin-bottom:22px}
+.footer-col li{margin-bottom:13px;line-height:1.5}
+.footer-col a,.footer-col p{font-size:13.5px;letter-spacing:0.015em}
+.copyright{font-size:10.5px;letter-spacing:0.16em;line-height:1.6}
+
+/* ==========================================================================
+   RESPONSIVE TYPE SCALE
+   ========================================================================== */
+@media(max-width:900px){
+  .section{padding:100px 0}
+  .menu-grid{gap:44px 0}
+  .lead{font-size:clamp(19px,3.4vw,24px)}
+}
+
+@media(max-width:700px){
+  .section{padding:88px 0}
+  .hero-title{font-size:clamp(64px,17vw,110px);letter-spacing:0.012em}
+  .hero-sub{letter-spacing:0.38em;text-indent:0.38em}
+}
+
+@media(max-width:560px){
+  .section{padding:66px 0}
+  .eyebrow{font-size:10px;letter-spacing:0.4em;text-indent:0.4em}
+  .sec-title{font-size:clamp(29px,7.6vw,42px);line-height:1.14}
+  .hero-eyebrow{letter-spacing:0.44em;text-indent:0.44em;font-size:10.5px}
+  .hero-sub{font-size:14px;letter-spacing:0.34em;text-indent:0.34em}
+  .lead{font-size:19px;line-height:1.7;margin:22px 0 20px}
+  .about-body p{font-size:15px;line-height:1.9}
+  .about-body .lead + p::first-letter{font-size:3em}
+  .menu-cat h3{font-size:22px}
+  .mitem{font-size:14.5px;padding:10px 0}
+  .mitem .price{font-size:13px}
+  .info-card h3{font-size:21px}
+  .faq-item summary{font-size:16px;padding:21px 2px;line-height:1.45}
+  .faq-a{font-size:14px}
+  .cta-sub{font-size:14px}
+  .f-en{font-size:24px}
+}
+
+/* ============================================================================
+   Cantina Akasaka — MOTION LAYER  (appended after existing <style>; order wins)
+   ----------------------------------------------------------------------------
+   HTML ADDITIONS REQUIRED: NONE.
+   All effects hook existing classes/pseudo-elements only. No markup changes.
+
+   CHANGE SUMMARY (5 lines):
+   1. Unified "expensive" easing set (cubic-bezier .2/.7/.2/1 family) across
+      buttons, links, badges, chips, social, map buttons, gallery, #toTop.
+   2. Gold sheen/shimmer sweep on primary/filled buttons (::before, hover only).
+   3. Refined reveal: smoother curve + real nth-child staggered cascade for
+      menu categories, info cards, gallery cells (CSS-only, keyed off .vis).
+   4. Micro-interactions: wipe-in underlines, :active depress, caption glide,
+      FAQ plus rotation, warm focus-visible glow — all touch/reduced-motion safe.
+   5. Every added transform/animation is neutralized under prefers-reduced-motion.
+   ============================================================================ */
+
+:root{
+  --ease-lux:cubic-bezier(.2,.7,.2,1);
+  --ease-soft:cubic-bezier(.33,.9,.35,1);
+}
+
+/* ---------------------------------------------------------------------------
+   1. PRIMARY / FILLED BUTTONS — gold sheen sweep + refined fill + depress
+   --------------------------------------------------------------------------- */
+.btn-solid,.btn-book,.map-btn.gold,.book-bar .bb-book{
+  position:relative;overflow:hidden;isolation:isolate;
+  transition:background .45s var(--ease-lux),border-color .45s var(--ease-lux),
+             color .45s var(--ease-lux),transform .18s var(--ease-lux),
+             box-shadow .45s var(--ease-lux);
+}
+.btn-solid::before,.btn-book::before,.map-btn.gold::before,.book-bar .bb-book::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:60%;
+  pointer-events:none;z-index:2;
+  background:linear-gradient(100deg,
+     transparent 0%,
+     rgba(239,231,214,0.10) 38%,
+     rgba(255,255,255,0.42) 50%,
+     rgba(239,231,214,0.10) 62%,
+     transparent 100%);
+  transform:translateX(-180%) skewX(-14deg);
+  opacity:0;
+}
+.btn-solid:hover::before,.btn-book:hover::before,
+.map-btn.gold:hover::before,.book-bar .bb-book:active::before{
+  animation:sheenSweep .9s var(--ease-lux) forwards;
+}
+@keyframes sheenSweep{
+  0%{transform:translateX(-180%) skewX(-14deg);opacity:0}
+  12%{opacity:1}
+  88%{opacity:1}
+  100%{transform:translateX(230%) skewX(-14deg);opacity:0}
+}
+.btn-solid:active,.btn-book:active,.map-btn.gold:active{
+  transform:translateY(1px) scale(.988);
+}
+
+/* ---------------------------------------------------------------------------
+   2. GHOST / OUTLINE BUTTONS — refined easing + subtle lift + depress
+   --------------------------------------------------------------------------- */
+.btn-ghost,.map-btn:not(.gold){
+  position:relative;overflow:hidden;
+  transition:background .45s var(--ease-lux),border-color .45s var(--ease-lux),
+             color .45s var(--ease-lux),transform .18s var(--ease-lux);
+}
+.btn-ghost::before,.map-btn:not(.gold)::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:55%;
+  pointer-events:none;z-index:2;
+  background:linear-gradient(100deg,transparent,rgba(239,122,114,0.16) 50%,transparent);
+  transform:translateX(-180%) skewX(-14deg);opacity:0;
+}
+.btn-ghost:hover::before,.map-btn:not(.gold):hover::before{
+  animation:sheenSweep 1s var(--ease-lux) forwards;
+}
+.btn-ghost:hover,.map-btn:not(.gold):hover{transform:translateY(-1px)}
+.btn-ghost:active,.map-btn:not(.gold):active{transform:translateY(1px) scale(.99)}
+.btn-book:hover{transform:translateY(-1px)}
+
+/* ---------------------------------------------------------------------------
+   3. NAV UNDERLINE — smoother transform-based wipe (origin left, snap-back)
+   --------------------------------------------------------------------------- */
+nav.main a{transition:color .4s var(--ease-lux)}
+nav.main a::after{
+  width:100%;transform:scaleX(0);transform-origin:left center;
+  transition:transform .42s var(--ease-lux),opacity .42s var(--ease-lux);
+  opacity:.85;
+}
+nav.main a:hover::after{transform:scaleX(1)}
+nav.main a:active{transform:translateY(1px)}
+
+/* ---------------------------------------------------------------------------
+   4. BADGES, CHIPS, SOCIAL, FOOTER & MISC LINKS — warm easing + gentle motion
+   --------------------------------------------------------------------------- */
+.badge{transition:border-color .4s var(--ease-lux),color .4s var(--ease-lux),transform .35s var(--ease-lux)}
+.badge:hover{transform:translateY(-2px)}
+
+.chip{transition:background .3s var(--ease-lux),color .3s var(--ease-lux),
+                 border-color .3s var(--ease-lux),transform .25s var(--ease-lux)}
+.chip:hover{transform:translateY(-1px) scale(1.03)}
+.chip:active{transform:translateY(0) scale(.97)}
+
+.f-social a{transition:border-color .4s var(--ease-lux),color .4s var(--ease-lux),
+                        transform .4s var(--ease-lux)}
+.f-social a:hover{transform:translateY(-3px)}
+.f-social a:active{transform:translateY(-1px) scale(.95)}
+
+.footer-col a{position:relative;transition:color .35s var(--ease-lux)}
+.footer-col a::after{
+  content:"";position:absolute;left:0;bottom:-2px;height:1px;width:100%;
+  background:var(--gold);transform:scaleX(0);transform-origin:left center;
+  transition:transform .4s var(--ease-lux);opacity:.7;
+}
+.footer-col a:hover::after{transform:scaleX(1)}
+
+.cta-follow a,.ivalue a{transition:color .35s var(--ease-lux),border-color .35s var(--ease-lux)}
+
+/* ---------------------------------------------------------------------------
+   5. GALLERY CELLS — refined image scale + caption glide + overlay lift
+   --------------------------------------------------------------------------- */
+.cell img{transition:transform 1.1s var(--ease-lux),filter 1.1s var(--ease-lux)}
+.cell::after{transition:opacity .6s var(--ease-lux)}
+.cell:hover::after{opacity:.42}
+.cell .cap{transition:opacity .5s var(--ease-lux),transform .55s var(--ease-lux)}
+.cell:hover .cap{transform:translateY(0)}
+
+/* ---------------------------------------------------------------------------
+   6. #toTop — smoother in/out + hover lift + press
+   --------------------------------------------------------------------------- */
+#toTop{transition:opacity .45s var(--ease-lux),transform .35s var(--ease-lux),
+                  background .4s var(--ease-lux),color .4s var(--ease-lux),
+                  border-color .4s var(--ease-lux)}
+#toTop:hover{transform:translateY(-3px)}
+#toTop:active{transform:translateY(-1px) scale(.94)}
+
+/* ---------------------------------------------------------------------------
+   7. FAQ — refined plus/chevron rotation easing
+   --------------------------------------------------------------------------- */
+.faq-item summary{transition:color .35s var(--ease-lux)}
+.faq-ic::before,.faq-ic::after{transition:transform .45s var(--ease-lux),opacity .45s var(--ease-lux)}
+/* keep the original clean plus->minus collapse, just eased smoothly */
+
+/* ---------------------------------------------------------------------------
+   8. REVEAL — smoother curve + staggered cascade for grids (CSS-only)
+   .vis is added by JS to each .reveal; nth-child delays cascade siblings.
+   --------------------------------------------------------------------------- */
+.reveal{transition:opacity 1s var(--ease-lux),transform 1s var(--ease-lux)}
+
+/* Menu categories cascade */
+.menu-cat.reveal:nth-child(1){transition-delay:.02s}
+.menu-cat.reveal:nth-child(2){transition-delay:.12s}
+.menu-cat.reveal:nth-child(3){transition-delay:.22s}
+.menu-cat.reveal:nth-child(4){transition-delay:.32s}
+
+/* Info cards cascade */
+.info-card.reveal:nth-child(1){transition-delay:.04s}
+.info-card.reveal:nth-child(2){transition-delay:.16s}
+
+/* Gallery cells cascade — grid.reveal is opacity:0 until .vis, so cells are
+   never orphaned; we only add a staggered translate lift keyed off .vis. */
+.photo-grid.reveal .cell{
+  transform:translateY(22px);
+  transition:transform .8s var(--ease-lux);
+}
+.photo-grid.reveal.vis .cell{transform:translateY(0)}
+.photo-grid.reveal.vis .cell:nth-child(1){transition-delay:.05s}
+.photo-grid.reveal.vis .cell:nth-child(2){transition-delay:.12s}
+.photo-grid.reveal.vis .cell:nth-child(3){transition-delay:.19s}
+.photo-grid.reveal.vis .cell:nth-child(4){transition-delay:.26s}
+.photo-grid.reveal.vis .cell:nth-child(5){transition-delay:.33s}
+.photo-grid.reveal.vis .cell:nth-child(6){transition-delay:.40s}
+.photo-grid.reveal.vis .cell:nth-child(7){transition-delay:.47s}
+.photo-grid.reveal.vis .cell:nth-child(8){transition-delay:.54s}
+.photo-grid.reveal.vis .cell:nth-child(9){transition-delay:.61s}
+/* cell hover scale/caption use the cell's OWN transform-free img; the lift
+   above sits on .cell, hover scale on .cell img — no conflict. */
+
+/* ---------------------------------------------------------------------------
+   9. FOCUS-VISIBLE — warm gold glow (state-only, animated in)
+   --------------------------------------------------------------------------- */
+:focus-visible{
+  outline-color:var(--gold-2);
+  transition:outline-color .25s var(--ease-lux),box-shadow .25s var(--ease-lux);
+  box-shadow:0 0 0 4px rgba(207,58,55,0.18);
+}
+
+/* ---------------------------------------------------------------------------
+   10. TOUCH DEGRADATION — no lingering hover transforms on touch devices
+   --------------------------------------------------------------------------- */
+@media(hover:none){
+  .btn-ghost:hover,.map-btn:not(.gold):hover,.btn-book:hover,
+  .badge:hover,.chip:hover,.f-social a:hover,#toTop:hover{transform:none}
+  .btn-solid:hover::before,.btn-book:hover::before,
+  .map-btn.gold:hover::before,.btn-ghost:hover::before,
+  .map-btn:not(.gold):hover::before{animation:none}
+}
+
+/* ---------------------------------------------------------------------------
+   11. REDUCED MOTION — neutralize every added transform/animation/keyframe
+   (existing global reset zeroes transitions/animations; this ensures no added
+   transform leaves an element visually displaced.)
+   --------------------------------------------------------------------------- */
+@media(prefers-reduced-motion:reduce){
+  .btn-solid::before,.btn-book::before,.map-btn.gold::before,
+  .book-bar .bb-book::before,.btn-ghost::before,.map-btn:not(.gold)::before{
+    display:none!important;animation:none!important;
+  }
+  .btn-solid:active,.btn-book:active,.map-btn:active,.btn-ghost:active,
+  .btn-ghost:hover,.map-btn:not(.gold):hover,.btn-book:hover,
+  nav.main a:active,.badge:hover,.chip:hover,.chip:active,
+  .f-social a:hover,.f-social a:active,#toTop:hover,#toTop:active{transform:none!important}
+  nav.main a::after,.footer-col a::after{transform:scaleX(0)!important}
+  nav.main a:hover::after,.footer-col a:hover::after{transform:scaleX(1)!important}
+  .photo-grid.reveal .cell,.photo-grid.reveal.vis .cell{transform:none!important}
+  .faq-item[open] .faq-ic{transform:none!important}
+  .faq-item[open] .faq-ic::before{transform:none!important}
+  :focus-visible{box-shadow:none!important}
+}
+
 </style>
 <script type="application/ld+json">
 {
