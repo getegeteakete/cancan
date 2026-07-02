@@ -932,8 +932,10 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   function rule(q){
     q=(q||'').toLowerCase();
     var has=function(){for(var i=0;i<arguments.length;i++){if(q.indexOf(arguments[i])>=0)return true;}return false;};
+    if(has('インスタ','instagram','dm','ダイレクト','sns'))
+      return '申し訳ありません、Instagramではご予約を承っておりません🙏 ご予約はお電話、またはホットペッパーグルメからお願いいたします。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
     if(has('予約','よやく','reserve','booking','席'))
-      return 'ぜひお越しくださいね😊 ご予約はホットペッパーグルメから24時間受け付けています。個室や貸切のご相談も、どうぞお気軽に。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ 予約ページを開く</a>';
+      return 'ぜひお越しくださいね😊 ご予約はお電話、またはホットペッパーグルメにて承っております（Instagramではご予約を受け付けておりません）。個室や貸切のご相談もお気軽に。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
     if(has('時間','営業','何時','open','定休','休み'))
       return '営業は夜18:00〜翌0:00（ラストオーダー23:30）です🌙 日曜・祝日はお休み（たまに不定休もございます）。仕事帰りに、ふらりとどうぞ。';
     if(has('アクセス','場所','どこ','駅','行き方','住所','map','地図'))
@@ -948,7 +950,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
       return '現金・クレジットカードがご利用いただけます💳 その他はお気軽に店頭でお尋ねくださいね。';
     if(has('駐車','パーキング','車'))
       return '申し訳ありません、専用の駐車場はないのですが、近くにコインパーキングがございます🚗 ゆっくり飲まれる際は公共交通機関も安心ですよ。';
-    return 'お問い合わせありがとうございます😊 ご予約は<a href="'+HOTPEPPER+'" target="_blank" rel="noopener">こちら</a>から。営業時間・アクセス・その日のおすすめなど、なんでもお答えしますので、気軽に続けてくださいね。';
+    return 'お問い合わせありがとうございます😊 ご予約はお電話、またはホットペッパーグルメより承っております（Instagramではご予約を受け付けておりません）。<a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>。営業時間・アクセス・おすすめなど、なんでも気軽に聞いてくださいね。';
   }
   function respond(q){
     if(CONCIERGE_API){

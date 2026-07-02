@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     "事実: 営業18:00〜翌0:00(L.O.23:30)/日曜・祝日定休(一部不定休)/住所 福岡市中央区赤坂2-3-28/",
     "赤坂駅2番出口 徒歩9分/40席・個室最大20名・貸切可/チャージ¥500/ディナー¥3,500〜 宴会¥5,000〜/",
     "ウイスキー(山崎12年・響・余市・マッカラン等)・ワイン・手作り料理。",
-    "予約はホットペッパー https://www.hotpepper.jp/strJ000670170/ 、Instagram @cantinaakasaka。",
+    "予約はお電話またはホットペッパー https://www.hotpepper.jp/strJ000670170/ にて承る。Instagram(@cantinaakasaka)は情報発信用で予約は受け付けない旨を必ず案内する。",
     "分からない事は店頭確認を促す。知らない事実を創作しない。"
   ].join("");
 
