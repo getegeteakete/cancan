@@ -71,10 +71,16 @@ h1.page{font-family:var(--serif);font-weight:500;font-size:clamp(34px,7vw,52px);
   var POSTS=[];
   function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 
-  fetch('posts.json',{cache:'no-store'})
-    .then(function(r){return r.json();})
+  fetch('/blog/posts.json',{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(d){ POSTS=(d&&d.posts)||[]; route(); })
-    .catch(function(){ document.getElementById('wrap').innerHTML='<div class="empty">記事を読み込めませんでした。</div>'; });
+    .catch(function(){
+      // 相対パスへのフォールバック（サブパス配信など念のため）
+      fetch('posts.json',{cache:'no-store'})
+        .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+        .then(function(d){ POSTS=(d&&d.posts)||[]; route(); })
+        .catch(function(){ document.getElementById('wrap').innerHTML='<div class="empty">記事を読み込めませんでした。<br><a href="/blog/" style="color:var(--red-2)">再読み込み</a></div>'; });
+    });
 
   window.addEventListener('hashchange',route);
 
