@@ -158,6 +158,14 @@ textarea{resize:vertical;min-height:70px}
     <div class="err" id="err"></div>
   </div>
 
+  <div class="card">
+    <label>ブログ自動記事（SEO）</label>
+    <p style="color:var(--muted);font-size:13px;margin:-6px 0 12px">毎日18時に1記事が自動公開されます。今すぐ手動で1本追加することもできます。<a href="/blog" target="_blank" rel="noopener">ブログを見る →</a></p>
+    <input id="blogTopic" type="text" placeholder="テーマ（空欄なら本日のお任せテーマ）">
+    <button class="btn-go" id="pubBtn" style="margin-top:14px;background:none;border:1px solid var(--red);color:var(--red-2)"><i class="fas fa-feather-pointed"></i> 今すぐ1記事を公開する</button>
+    <div class="err" id="pubMsg"></div>
+  </div>
+
   <div class="loading" id="loading"><div class="spinner"></div>AIが記事を作成中です…</div>
   <div class="results" id="results"></div>
 </div>
@@ -210,6 +218,25 @@ textarea{resize:vertical;min-height:70px}
     document.getElementById('uNow').textContent='—'; document.getElementById('uTok').textContent='—';
   });
   renderTotal();
+
+  // ===== ブログ 今すぐ公開 =====
+  var pubBtn=document.getElementById('pubBtn'),pubMsg=document.getElementById('pubMsg');
+  pubBtn.addEventListener('click',function(){
+    pubMsg.style.color=''; pubMsg.textContent='生成中…'; pubBtn.disabled=true;
+    fetch('/api/cron-article',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password:sessionStorage.getItem(PW_KEY),topic:document.getElementById('blogTopic').value.trim()})
+    })
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+    .then(function(o){
+      pubBtn.disabled=false;
+      if(!o.ok){pubMsg.textContent=(o.d&&o.d.error)||'公開に失敗しました。';return;}
+      pubMsg.style.color='#8fce8f';
+      pubMsg.innerHTML='公開しました：「'+((o.d&&o.d.title)||'記事')+'」 <a href="/blog" target="_blank" rel="noopener">ブログで見る →</a>';
+      document.getElementById('blogTopic').value='';
+    })
+    .catch(function(){pubBtn.disabled=false;pubMsg.textContent='通信エラーが発生しました。';});
+  });
 
   go.addEventListener('click',function(){
     var topic=document.getElementById('topic').value.trim();
