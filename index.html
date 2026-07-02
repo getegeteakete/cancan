@@ -771,10 +771,14 @@ body::after{animation:grain .55s steps(3) infinite}
   "currenciesAccepted":"JPY",
   "paymentAccepted":"現金, クレジットカード（VISA・Mastercard・AMEX・JCB・Diners・Discover・銀聯）, 電子マネー（交通系・iD・QUICPay・Apple Pay・楽天Edy・WAON・nanaco）, QRコード決済（PayPay・楽天ペイ・d払い・au PAY・メルペイ ほか）",
   "acceptsReservations":"True",
+  "smokingAllowed":true,
   "amenityFeature":[
     {"@type":"LocationFeatureSpecification","name":"個室・貸切（2階席 4〜25名）","value":true},
     {"@type":"LocationFeatureSpecification","name":"カラオケ設備","value":true},
-    {"@type":"LocationFeatureSpecification","name":"カウンター席","value":true}
+    {"@type":"LocationFeatureSpecification","name":"カウンター席","value":true},
+    {"@type":"LocationFeatureSpecification","name":"喫煙可","value":true},
+    {"@type":"LocationFeatureSpecification","name":"Wi-Fi","value":true},
+    {"@type":"LocationFeatureSpecification","name":"近隣コインパーキング","value":true}
   ],
   "telephone":"+81-92-712-0745",
   "address":{
@@ -813,7 +817,8 @@ body::after{animation:grain .55s steps(3) infinite}
     {"@type":"Question","name":"個室・貸切・カラオケはありますか？","acceptedAnswer":{"@type":"Answer","text":"2階席は4〜25名で貸切個室としてご利用いただけ、カラオケ設備も完備しています。会社宴会・二次会・結婚式二次会・同窓会・女子会などに人気です。"}},
     {"@type":"Question","name":"宴会・飲み放題コースはありますか？","acceptedAnswer":{"@type":"Answer","text":"飲み放題付きコースをご用意しています。二次会宴会コース（90分飲み放題付・全3品）¥3,000（税込）、女子会プラン（120分飲み放題付・女性限定）¥4,000（税込）、女子会プラン（お料理のみ）¥3,000（税込）など。"}},
     {"@type":"Question","name":"支払い方法は？","acceptedAnswer":{"@type":"Answer","text":"現金、各種クレジットカード（VISA・Mastercard・AMEX・JCB・Diners・Discover・銀聯）、電子マネー（交通系・iD・QUICPay・Apple Pay・楽天Edy・WAON・nanaco）、QRコード決済（PayPay・楽天ペイ・d払い・au PAY・メルペイ ほか）がご利用いただけます。テーブルチャージは¥550（税込）です。"}},
-    {"@type":"Question","name":"どんなお酒・料理がありますか？","acceptedAnswer":{"@type":"Answer","text":"山崎12年・響 Japanese Harmony・余市などの国産ウイスキー、マッカランやボウモアなどのスコッチ、ワイン、生ビール、カクテルまで幅広く。名物のカマンベールマーマレードや塩麹熟成牛ステーキ（アンガス牛）をはじめ、シェフ手作りの創作料理もお楽しみいただけます。"}}
+    {"@type":"Question","name":"どんなお酒・料理がありますか？","acceptedAnswer":{"@type":"Answer","text":"山崎12年・響 Japanese Harmony・余市などの国産ウイスキー、マッカランやボウモアなどのスコッチ、ワイン、生ビール、カクテルまで幅広く。名物のカマンベールマーマレードや塩麹熟成牛ステーキ（アンガス牛）をはじめ、シェフ手作りの創作料理もお楽しみいただけます。"}},
+    {"@type":"Question","name":"喫煙・駐車場・Wi-Fiは？","acceptedAnswer":{"@type":"Answer","text":"店内は喫煙可、Wi-Fiもご用意しています。専用の駐車場はございませんが、近隣にコインパーキングがございます。"}}
   ]
 }
 </script>
@@ -1059,6 +1064,7 @@ body::after{animation:grain .55s steps(3) infinite}
         <div class="irow"><div class="ilabel">席数</div><div class="ivalue">40席（カウンター／テーブル）<br><small>2階は貸切個室 4〜25名・カラオケ完備</small></div></div>
         <div class="irow"><div class="ilabel">予算</div><div class="ivalue">ディナー ¥3,500〜 ／ 宴会コース ¥3,000〜</div></div>
         <div class="irow"><div class="ilabel">お支払い</div><div class="ivalue">現金・各種クレジットカード・電子マネー・QRコード決済<br><small>VISA / Mastercard / AMEX / JCB / Diners / Discover / 銀聯、交通系・iD・QUICPay・Apple Pay・楽天Edy・WAON・nanaco、PayPay・楽天ペイ・d払い・au PAY・メルペイ ほか</small></div></div>
+        <div class="irow"><div class="ilabel">設備</div><div class="ivalue">喫煙可 ／ Wi-Fi 有 ／ 駐車場<br><small>専用駐車場はございませんが、近隣にコインパーキングがございます</small></div></div>
       </div>
       <div class="info-card reveal">
         <h3>連絡先・アクセス</h3>
@@ -1110,6 +1116,7 @@ body::after{animation:grain .55s steps(3) infinite}
       <details class="faq-item reveal"><summary>宴会・飲み放題コースはありますか？<span class="faq-ic"></span></summary><div class="faq-a">飲み放題付きのコースをご用意しています。二次会宴会コース（90分飲み放題付・全3品）¥3,000（税込）、女子会プラン（120分飲み放題付・女性限定）¥4,000（税込）、女子会プラン（お料理のみ）¥3,000（税込）など。各種宴会向けの「カンティーナ赤坂コース」もございます。<a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener">▸ コースの詳細・ご予約</a></div></details>
       <details class="faq-item reveal"><summary>支払い方法は？（カード・電子マネー・QR決済）<span class="faq-ic"></span></summary><div class="faq-a">現金のほか、各種クレジットカード（VISA / Mastercard / AMEX / JCB / Diners / Discover / 銀聯）、電子マネー（交通系・iD・QUICPay・Apple Pay・楽天Edy・WAON・nanaco ほか）、QRコード決済（PayPay・楽天ペイ・d払い・au PAY・メルペイ ほか）がご利用いただけます。テーブルチャージは¥550（税込）です。</div></details>
       <details class="faq-item reveal"><summary>どんなお酒・料理がありますか？<span class="faq-ic"></span></summary><div class="faq-a">山崎12年・響 Japanese Harmony・余市などの国産ウイスキー、マッカランやボウモアなどのスコッチ、ワイン、生ビール、カクテルまで幅広く。お料理は名物の「カマンベールマーマレード」や「塩麹熟成牛ステーキ（アンガス牛）」をはじめ、シェフ手作りの創作料理を多数ご用意しています。</div></details>
+      <details class="faq-item reveal"><summary>喫煙・駐車場・Wi-Fiは？<span class="faq-ic"></span></summary><div class="faq-a">店内は喫煙可、Wi-Fiもご用意しています。専用の駐車場はございませんが、近隣にコインパーキングがございます。ゆっくり飲まれる際は公共交通機関のご利用も安心です。</div></details>
     </div>
   </div>
 </section>
@@ -1326,7 +1333,11 @@ body::after{animation:grain .55s steps(3) infinite}
     if(has('支払','カード','クレジット','現金','paypay','電子マネー','決済','キャッシュレス','qr'))
       return 'キャッシュレスに幅広く対応しています💳 現金のほか、各種クレジットカード（VISA・Master・AMEX・JCB・Diners・Discover・銀聯）、電子マネー（交通系・iD・QUICPay・Apple Pay・楽天Edy・WAON・nanaco）、QR決済（PayPay・楽天ペイ・d払い・au PAY・メルペイ ほか）がご利用いただけます。テーブルチャージは¥550（税込）です。';
     if(has('駐車','パーキング','車'))
-      return '申し訳ありません、専用の駐車場はないのですが、近くにコインパーキングがございます🚗 ゆっくり飲まれる際は公共交通機関も安心ですよ。';
+      return '専用の駐車場はございませんが、近くにコインパーキングがございます🚗 ゆっくり飲まれる際は公共交通機関も安心ですよ。';
+    if(has('喫煙','タバコ','たばこ','煙草','禁煙','吸える'))
+      return '当店は喫煙可能です🚬 タバコを楽しみながらごゆっくりお過ごしいただけます。';
+    if(has('wifi','wi-fi','ワイファイ','無線','ネット'))
+      return 'はい、Wi-Fiをご用意しています📶 ごゆっくりお過ごしくださいね。';
     return 'お問い合わせありがとうございます😊 ご予約はお電話（<a href="tel:'+TEL+'">'+TEL+'</a>）、またはホットペッパーグルメより承っております（Instagramではご予約を受け付けておりません）。<a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>。営業時間・アクセス・おすすめなど、なんでも気軽に聞いてくださいね。';
   }
   function respond(q){
