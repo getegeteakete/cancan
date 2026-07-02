@@ -11,8 +11,8 @@ const FACTS = [
   "酒: 山崎12年・響 Japanese Harmony・余市・マッカラン・ボウモア、ワイン、生ビール、カクテル",
   "料理: 熟成牛のステーキ、カルボナーラ、チーズ盛合せ、アヒージョ、玉子焼、締めのラーメンや味噌汁も",
   "席: 40席・個室最大20名・貸切可 / チャージ¥500 / ディナー¥3,500〜 宴会¥5,000〜",
-  "予約: ホットペッパーグルメ https://www.hotpepper.jp/strJ000670170/",
-  "Instagram: @cantinaakasaka",
+  "予約: お電話 092-712-0745 または ホットペッパーグルメ https://www.hotpepper.jp/strJ000670170/（Instagramでは予約を受け付けていない）",
+  "Instagram: @cantinaakasaka（情報発信用）",
 ].join("\n");
 
 const PLATFORM_GUIDE = {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   if (!adminPw)
     return res.status(500).json({ error: "ADMIN_PASSWORD が未設定です。Vercelの環境変数に追加してください（管理画面の保護に必要）。" });
 
-  const { platform, topic, tone, count, password } = req.body || {};
+  const { platform, topic, tone, count, password, examples, knowledge } = req.body || {};
   if (password !== adminPw) return res.status(401).json({ error: "パスワードが違います。" });
 
   const guide = PLATFORM_GUIDE[platform];
@@ -50,17 +50,28 @@ export default async function handler(req, res) {
   const toneText = tone || "落ち着いた大人の雰囲気";
   const theme = (topic || "お店の魅力を伝える宣伝").slice(0, 300);
 
+  const kb = (knowledge || "").toString().slice(0, 1200).trim();
+  const wins = Array.isArray(examples) ? examples.slice(-6).map(function (s) { return String(s).slice(0, 400); }) : [];
+
   const SYSTEM =
-    "あなたは福岡・赤坂のバー食堂『カンティーナ赤坂』のSNS運用担当です。" +
-    "以下の事実だけを使い、事実を創作しません。日本語で、店の世界観(大人・上質・ニューオーリンズ/ブルース)に合う魅力的な投稿を書きます。\n\n" +
-    "【店舗情報】\n" + FACTS +
-    "\n\n【予約リンク】https://www.hotpepper.jp/strJ000670170/";
+    "あなたは飲食店専門の敏腕SNSマーケターです。担当は福岡・赤坂のバー食堂『カンティーナ赤坂』。" +
+    "目的は保存・シェア・来店につながる、思わず反応したくなる投稿を作ること。以下を徹底します:\n" +
+    "1) 最初の一文は強いフック(問いかけ/意外な事実/情景/共感)で続きを読ませる。\n" +
+    "2) 読み手の得(こんな時に使える/こんな気分に効く)を具体的に描き、保存したくなる情報を1つ入れる。\n" +
+    "3) 押し売りせず、世界観(大人・上質・ニューオーリンズ/ブルース・琥珀色の灯り)で惹きつける。\n" +
+    "4) 最後は自然で明確なCTA。予約はお電話(092-712-0745)かホットペッパーのみ、Instagramは予約不可と分かる形で(くどくならない範囲で)。\n" +
+    "5) 事実のみ使用し、割引・在庫など未確認情報は創作しない。誇大・嘘・過度な煽りは禁止。\n" +
+    "6) 各案は切り口(フックの型)を変え、似通わせない。\n\n" +
+    "【店舗情報(事実)】\n" + FACTS +
+    (kb ? "\n\n【お店の最新情報・メモ(最優先で活用)】\n" + kb : "") +
+    (wins.length ? "\n\n【過去に好評だった投稿(トーンと型のお手本。丸写しはしない)】\n- " + wins.join("\n- ") : "");
 
   const USER =
-    `次の条件で${n}案作成してください。\n` +
+    `次の条件で、エンゲージメントを最大化する投稿を${n}案。互いに切り口を変えてください。\n` +
     `・プラットフォーム: ${platform}\n・作成方針: ${guide}\n` +
-    `・テーマ/ネタ: ${theme}\n・トーン: ${toneText}\n\n` +
-    `出力は次の形式の**JSONのみ**(前後に説明やコードブロックを付けない):\n` +
+    `・テーマ/ネタ: ${theme}\n・トーン: ${toneText}\n` +
+    (kb ? `・「最新情報・メモ」があれば必ず織り込む\n` : ``) +
+    `\n出力は次の形式の**JSONのみ**(前後に説明やコードブロックを付けない):\n` +
     `{"posts":[{"caption":"本文","hashtags":["#タグ1","#タグ2"]}]}\n` +
     `hashtagsが不要なプラットフォームでは空配列にしてください。`;
 
@@ -74,7 +85,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 1500,
+        max_tokens: 2000,
         system: SYSTEM,
         messages: [{ role: "user", content: USER }],
       }),

@@ -74,6 +74,10 @@ textarea{resize:vertical;min-height:70px}
 .gate .card{text-align:left}
 .hint{font-family:var(--sans);font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7}
 .hide{display:none}
+.chip-btn{font-family:var(--sans);font-size:12px;color:var(--cream);background:none;border:1px solid var(--line);padding:9px 16px;cursor:pointer;transition:all .25s}
+.chip-btn:hover{border-color:var(--red);color:var(--red-2)}
+.learn-stat{font-family:var(--sans);font-size:11px;color:var(--muted)}
+.like-btn.liked{background:var(--red);color:#fff;border-color:var(--red)}
 .usage{
   display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;
   background:var(--ink-2);border:1px solid var(--line-soft);border-left:2px solid var(--red);
@@ -122,6 +126,13 @@ textarea{resize:vertical;min-height:70px}
   </div>
 
   <div class="card">
+    <label>お店の最新情報・メモ（AIが学習します）</label>
+    <textarea id="knowledge" placeholder="例：今週は生牡蠣入荷／金曜はジャズの生演奏／新メニューのうにトースト／常連さんに人気の裏メニュー…（保存すると次回以降の生成に反映されます）"></textarea>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+      <button id="kbSave" class="chip-btn">メモを保存</button>
+      <span class="learn-stat" id="learnStat"></span>
+    </div>
+
     <label>プラットフォーム</label>
     <div class="seg" id="platform">
       <button data-v="instagram" class="active"><i class="fab fa-instagram"></i> Instagram</button>
@@ -219,6 +230,19 @@ textarea{resize:vertical;min-height:70px}
   });
   renderTotal();
 
+  // ===== 学習（メモ＆好評投稿） =====
+  var KB_KEY='cantina_sns_knowledge', EX_KEY='cantina_sns_examples';
+  function getExamples(){try{return JSON.parse(localStorage.getItem(EX_KEY)||'[]');}catch(e){return [];}}
+  function updateLearnStat(){
+    var ex=getExamples();
+    document.getElementById('learnStat').textContent='学習済みお手本 '+ex.length+'件'+(localStorage.getItem(KB_KEY)?'・メモ保存あり':'');
+  }
+  (function(){var k=localStorage.getItem(KB_KEY);if(k)document.getElementById('knowledge').value=k;updateLearnStat();})();
+  document.getElementById('kbSave').addEventListener('click',function(){
+    localStorage.setItem(KB_KEY,document.getElementById('knowledge').value.trim());
+    var b=this;b.textContent='保存しました';setTimeout(function(){b.textContent='メモを保存';},1500);updateLearnStat();
+  });
+
   // ===== ブログ 今すぐ公開 =====
   var pubBtn=document.getElementById('pubBtn'),pubMsg=document.getElementById('pubMsg');
   pubBtn.addEventListener('click',function(){
@@ -249,7 +273,9 @@ textarea{resize:vertical;min-height:70px}
         platform:platform,topic:topic,
         tone:document.getElementById('tone').value,
         count:document.getElementById('count').value,
-        password:sessionStorage.getItem(PW_KEY)
+        password:sessionStorage.getItem(PW_KEY),
+        knowledge:document.getElementById('knowledge').value.trim(),
+        examples:getExamples()
       })
     })
     .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
@@ -279,6 +305,7 @@ textarea{resize:vertical;min-height:70px}
       (tags?'<div class="tags">'+esc(tags)+'</div>':'')+
       '<div class="actions">'+
         '<button class="copyBtn"><i class="far fa-copy"></i> 全文コピー</button>'+
+        '<button class="like-btn"><i class="far fa-thumbs-up"></i> 良い（学習）</button>'+
       '</div>';
     div.querySelector('.copyBtn').addEventListener('click',function(){
       var btn=this;
@@ -286,6 +313,12 @@ textarea{resize:vertical;min-height:70px}
         btn.innerHTML='<i class="fas fa-check"></i> コピーしました';
         setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 全文コピー';},1600);
       });
+    });
+    div.querySelector('.like-btn').addEventListener('click',function(){
+      var btn=this;
+      var ex=getExamples(); ex.push(full); ex=ex.slice(-12); // 直近12件を記憶
+      localStorage.setItem(EX_KEY,JSON.stringify(ex)); updateLearnStat();
+      btn.classList.add('liked'); btn.innerHTML='<i class="fas fa-thumbs-up"></i> 学習しました';
     });
     results.appendChild(div);
   }
