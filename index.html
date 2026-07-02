@@ -886,7 +886,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   /* ===== AI CONCIERGE ===== */
   // ▼本番でClaude搭載にする場合：Vercelに /api/concierge を用意し、下記を実エンドポイントに。
   //   未設定(null)の間は、下のルールベース回答で即動作します。
-  var CONCIERGE_API = null; // 例: "/api/concierge"
+  var CONCIERGE_API = "/api/concierge"; // Claude搭載を有効化（未設定時は自動でルール応答に戻る）
   var HOTPEPPER="https://www.hotpepper.jp/strJ000670170/";
   var MAPS="https://maps.app.goo.gl/XTVVBCYCCG18QL4N6";
   var IG="https://www.instagram.com/cantinaakasaka/";
