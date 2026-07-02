@@ -154,55 +154,89 @@ nav.main a:hover::after{width:100%}
 .btn-book:hover{background:transparent;color:var(--gold-2)}
 .menu-toggle{display:none;background:none;border:none;color:var(--cream);font-size:20px;cursor:pointer}
 
-/* mobile nav ── 上質なドロワー */
+/* mobile nav ── premium drawer v2 */
 .mnav{
   position:fixed;inset:0;z-index:200;
   background:
-    radial-gradient(120% 70% at 82% 0%, rgba(168,58,44,0.16), transparent 55%),
-    linear-gradient(180deg, rgba(12,9,6,0.99), rgba(8,5,3,0.99));
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;
-  padding:20px 26px calc(24px + env(safe-area-inset-bottom));
-  opacity:0;pointer-events:none;transition:opacity .45s ease;overflow-y:auto;
+    radial-gradient(100% 55% at 85% -5%, rgba(207,58,55,0.18), transparent 55%),
+    radial-gradient(85% 50% at 8% 106%, rgba(168,58,44,0.11), transparent 60%),
+    linear-gradient(180deg, rgba(14,10,7,0.995), rgba(7,4,3,0.995));
+  backdrop-filter:blur(16px) saturate(1.1);-webkit-backdrop-filter:blur(16px) saturate(1.1);
+  display:block;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow-y:auto;
 }
 .mnav.open{opacity:1;pointer-events:auto}
-.mnav-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line-soft)}
-.mnav-brand{font-family:var(--serif);font-size:21px;letter-spacing:.08em;color:var(--cream)}
-.mnav-brand b{color:var(--gold);font-weight:500}
-.mnav .close{position:static;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--cream);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s,color .3s,transform .3s}
-.mnav .close:active,.mnav .close:hover{border-color:var(--gold);color:var(--gold-2);transform:rotate(90deg)}
-.mnav-list{flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px 0;min-height:0}
+.mnav-inner{
+  min-height:100%;display:flex;flex-direction:column;
+  max-width:520px;width:100%;margin:0 auto;
+  padding:26px 30px calc(30px + env(safe-area-inset-bottom));
+  transform:scale(.985);transition:transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.mnav.open .mnav-inner{transform:none}
+.mnav-top{display:flex;align-items:flex-start;justify-content:space-between}
+.mnav-word{display:flex;flex-direction:column}
+.mnav-word-en{font-family:var(--serif);font-size:23px;letter-spacing:.09em;color:var(--cream);line-height:1}
+.mnav-word-en::after{content:"";display:block;width:34px;height:1px;background:var(--gold);margin-top:11px;opacity:.85}
+.mnav-word-ja{font-family:var(--sans);font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.mnav .close{position:relative;flex-shrink:0;width:48px;height:48px;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;transition:border-color .4s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.mnav .close .x-line{position:absolute;top:50%;left:50%;width:17px;height:1.5px;background:var(--cream);transition:background .3s ease}
+.mnav .close .x-line:nth-child(1){transform:translate(-50%,-50%) rotate(45deg)}
+.mnav .close .x-line:nth-child(2){transform:translate(-50%,-50%) rotate(-45deg)}
+.mnav .close:hover,.mnav .close:active{border-color:var(--gold);transform:rotate(90deg)}
+.mnav .close:hover .x-line,.mnav .close:active .x-line{background:var(--gold-2)}
+.mnav-eyebrow{
+  display:flex;align-items:center;gap:12px;margin-top:30px;
+  font-family:var(--sans);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);
+  opacity:0;transform:translateY(10px);transition:opacity .6s ease .12s,transform .6s ease .12s;
+}
+.mnav.open .mnav-eyebrow{opacity:.9;transform:none}
+.mnav-eyebrow i{opacity:.5;font-style:normal;font-size:.78em}
+.mnav-list{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 0;min-height:0}
 .mnav-list a{
-  display:flex;align-items:baseline;gap:16px;position:relative;
-  padding:18px 4px;text-decoration:none;border-bottom:1px solid rgba(207,58,55,0.10);
-  opacity:0;transform:translateX(-16px);
-  transition:opacity .5s ease,transform .5s ease,color .3s ease;
+  display:flex;align-items:center;gap:20px;position:relative;
+  padding:18px 2px;text-decoration:none;border-bottom:1px solid rgba(207,58,55,0.12);
+  opacity:0;transform:translateY(14px);filter:blur(6px);
+  transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1),filter .6s ease;
 }
 .mnav-list a:last-child{border-bottom:0}
-.mnav.open .mnav-list a{opacity:1;transform:none}
-.mnav.open .mnav-list a:nth-child(1){transition-delay:.10s}
-.mnav.open .mnav-list a:nth-child(2){transition-delay:.16s}
-.mnav.open .mnav-list a:nth-child(3){transition-delay:.22s}
-.mnav.open .mnav-list a:nth-child(4){transition-delay:.28s}
-.mnav.open .mnav-list a:nth-child(5){transition-delay:.34s}
-.mnav.open .mnav-list a:nth-child(6){transition-delay:.40s}
-.mn-no{font-family:var(--sans);font-size:11px;letter-spacing:.18em;color:var(--gold);opacity:.7;min-width:22px}
-.mn-ja{font-family:var(--mincho);font-size:25px;color:var(--cream);letter-spacing:.05em;line-height:1}
-.mn-en{margin-left:auto;font-family:var(--sans);font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
-.mnav-list a::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:1px;background:var(--gold);transition:width .4s ease}
-.mnav-list a:active .mn-ja{color:var(--gold-2)}
-.mnav-list a:active::after{width:100%}
-.mnav-foot{border-top:1px solid var(--line-soft);padding-top:18px;display:flex;flex-direction:column;gap:16px}
-.mnav-book{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  background:var(--gold);color:#f5efe3;text-decoration:none;
-  font-family:var(--sans);font-size:14px;letter-spacing:.1em;font-weight:500;
-  padding:16px;border:1px solid var(--gold);transition:background .3s;
+.mnav.open .mnav-list a{opacity:1;transform:none;filter:blur(0)}
+.mnav.open .mnav-list a:nth-child(1){transition-delay:.16s}
+.mnav.open .mnav-list a:nth-child(2){transition-delay:.22s}
+.mnav.open .mnav-list a:nth-child(3){transition-delay:.28s}
+.mnav.open .mnav-list a:nth-child(4){transition-delay:.34s}
+.mnav.open .mnav-list a:nth-child(5){transition-delay:.40s}
+.mnav.open .mnav-list a:nth-child(6){transition-delay:.46s}
+.mn-no{font-family:var(--sans);font-size:12px;letter-spacing:.1em;color:var(--gold);opacity:.7;min-width:24px;font-variant-numeric:tabular-nums;align-self:flex-start;padding-top:3px}
+.mn-label{display:flex;flex-direction:column;gap:5px}
+.mn-ja{font-family:var(--mincho);font-size:27px;color:var(--cream);letter-spacing:.06em;line-height:1;transition:color .3s ease}
+.mn-en{font-family:var(--sans);font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+.mn-arrow{margin-left:auto;color:var(--gold);font-size:14px;opacity:0;transform:translateX(-10px);transition:opacity .4s ease,transform .4s ease}
+.mnav-list a::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transition:width .5s ease}
+.mnav-list a:hover .mn-ja,.mnav-list a:active .mn-ja{color:var(--gold-2)}
+.mnav-list a:hover .mn-arrow,.mnav-list a:active .mn-arrow{opacity:1;transform:translateX(0)}
+.mnav-list a:hover::after,.mnav-list a:active::after{width:100%}
+.mnav-foot{
+  border-top:1px solid var(--line-soft);padding-top:24px;display:flex;flex-direction:column;gap:22px;
+  opacity:0;transform:translateY(12px);transition:opacity .6s ease .5s,transform .6s ease .5s;
 }
-.mnav-book:active{background:var(--gold-2)}
-.mnav-contact{display:flex;flex-direction:column;gap:11px;align-items:center;text-align:center}
-.mnav-contact a,.mnav-contact span{font-family:var(--sans);font-size:12px;letter-spacing:.05em;color:rgba(239,231,214,.78);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.mnav-contact i{color:var(--gold);width:14px;text-align:center}
+.mnav.open .mnav-foot{opacity:1;transform:none}
+.mnav-book{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:18px 24px;text-decoration:none;position:relative;overflow:hidden;
+  border:1px solid var(--gold);background:linear-gradient(180deg,rgba(207,58,55,0.14),rgba(207,58,55,0.04));
+  transition:background .4s ease;
+}
+.mnav-book::after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);transition:left .7s ease}
+.mnav-book:active::after{left:150%}
+.mnav-book:active{background:linear-gradient(180deg,rgba(207,58,55,0.22),rgba(207,58,55,0.08))}
+.mb-txt{display:flex;flex-direction:column;gap:5px}
+.mb-ja{font-family:var(--serif);font-style:italic;font-size:23px;color:var(--gold-2);line-height:1}
+.mb-en{font-family:var(--sans);font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.mnav-book>i{color:var(--gold);font-size:15px;flex-shrink:0}
+.mnav-contact{display:flex;justify-content:center;gap:14px}
+.mnav-contact a{width:46px;height:46px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(239,231,214,.82);text-decoration:none;transition:border-color .3s ease,color .3s ease,transform .3s ease}
+.mnav-contact a:hover,.mnav-contact a:active{border-color:var(--gold);color:var(--gold-2);transform:translateY(-2px)}
+.mnav-contact i{font-size:15px}
+.mnav-hours{text-align:center;font-family:var(--sans);font-size:11px;letter-spacing:.14em;color:var(--muted)}
 
 /* ---- hero ---- */
 .hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -842,24 +876,34 @@ body::after{animation:grain .55s steps(3) infinite}
 </header>
 
 <div class="mnav" id="mnav">
-  <div class="mnav-top">
-    <span class="mnav-brand">Cantina <b>Akasaka</b></span>
-    <button class="close" id="closeBtn" aria-label="閉じる"><i class="fas fa-times"></i></button>
-  </div>
-  <nav class="mnav-list">
-    <a href="#about" onclick="closeNav()"><span class="mn-no">01</span><span class="mn-ja">当店について</span><span class="mn-en">About</span></a>
-    <a href="#gallery" onclick="closeNav()"><span class="mn-no">02</span><span class="mn-ja">店内</span><span class="mn-en">Gallery</span></a>
-    <a href="#menu" onclick="closeNav()"><span class="mn-no">03</span><span class="mn-ja">お品書き</span><span class="mn-en">Menu</span></a>
-    <a href="#info" onclick="closeNav()"><span class="mn-no">04</span><span class="mn-ja">店舗情報</span><span class="mn-en">Information</span></a>
-    <a href="#access" onclick="closeNav()"><span class="mn-no">05</span><span class="mn-ja">アクセス</span><span class="mn-en">Access</span></a>
-    <a href="/blog"><span class="mn-no">06</span><span class="mn-ja">ブログ</span><span class="mn-en">Journal</span></a>
-  </nav>
-  <div class="mnav-foot">
-    <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="mnav-book"><i class="fas fa-calendar-check"></i> ご予約（ホットペッパー）</a>
-    <div class="mnav-contact">
-      <a href="tel:092-712-0745"><i class="fas fa-phone"></i> 092-712-0745</a>
-      <span><i class="fas fa-clock"></i> 18:00〜翌0:00・日祝休</span>
-      <a href="https://www.instagram.com/cantinaakasaka/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> @cantinaakasaka</a>
+  <div class="mnav-inner">
+    <div class="mnav-top">
+      <div class="mnav-word">
+        <span class="mnav-word-en">Cantina Akasaka</span>
+        <span class="mnav-word-ja">カンティーナ赤坂</span>
+      </div>
+      <button class="close" id="closeBtn" aria-label="閉じる"><span class="x-line"></span><span class="x-line"></span></button>
+    </div>
+    <div class="mnav-eyebrow"><span>Whisky</span><i>✦</i><span>Wine</span><i>✦</i><span>Kitchen</span></div>
+    <nav class="mnav-list">
+      <a href="#about" onclick="closeNav()"><span class="mn-no">01</span><span class="mn-label"><span class="mn-ja">当店について</span><span class="mn-en">About</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+      <a href="#gallery" onclick="closeNav()"><span class="mn-no">02</span><span class="mn-label"><span class="mn-ja">店内</span><span class="mn-en">Gallery</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+      <a href="#menu" onclick="closeNav()"><span class="mn-no">03</span><span class="mn-label"><span class="mn-ja">お品書き</span><span class="mn-en">Menu</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+      <a href="#info" onclick="closeNav()"><span class="mn-no">04</span><span class="mn-label"><span class="mn-ja">店舗情報</span><span class="mn-en">Information</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+      <a href="#access" onclick="closeNav()"><span class="mn-no">05</span><span class="mn-label"><span class="mn-ja">アクセス</span><span class="mn-en">Access</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+      <a href="/blog"><span class="mn-no">06</span><span class="mn-label"><span class="mn-ja">ブログ</span><span class="mn-en">Journal</span></span><i class="mn-arrow fas fa-arrow-right-long"></i></a>
+    </nav>
+    <div class="mnav-foot">
+      <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="mnav-book">
+        <span class="mb-txt"><span class="mb-ja">ご予約</span><span class="mb-en">Reservation ・ Hot Pepper</span></span>
+        <i class="fas fa-arrow-right-long"></i>
+      </a>
+      <div class="mnav-contact">
+        <a href="tel:092-712-0745" aria-label="電話"><i class="fas fa-phone"></i></a>
+        <a href="https://www.instagram.com/cantinaakasaka/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://maps.app.goo.gl/XTVVBCYCCG18QL4N6" target="_blank" rel="noopener" aria-label="地図"><i class="fas fa-location-dot"></i></a>
+      </div>
+      <div class="mnav-hours">18:00 〜 翌0:00 ・ 日曜・祝日休</div>
     </div>
   </div>
 </div>
@@ -1436,6 +1480,35 @@ body::after{animation:grain .55s steps(3) infinite}
             }
           };
           addEventListener('scroll',function(){ sy=scrollY||pageYOffset; if(!tk){tk=true;requestAnimationFrame(apply);} },{passive:true});
+        }
+      }
+    }catch(e){}
+
+    /* [12b] 汎用パララックス（スクロールで各要素が層のように動く） */
+    try{
+      if(!RM){
+        var px=[];  // [element, speed, maxOffsetPx]
+        var afig=document.querySelector('.about-figure img');
+        if(afig) px.push([afig,0.045,12]);
+        // ギャラリーは全セル均一速度（隣接セルの重なりを防止）
+        [].forEach.call(document.querySelectorAll('.photo-grid .cell'),function(c){ px.push([c,0.04,12]); });
+        var ctaInner=document.querySelector('.cta-inner'); if(ctaInner) px.push([ctaInner,0.06,40]);
+        if(px.length){
+          var pxTick=false;
+          var pxApply=function(){
+            pxTick=false; var vh=innerHeight;
+            for(var j=0;j<px.length;j++){
+              var el=px[j][0], sp=px[j][1], mx=px[j][2];
+              var r=el.getBoundingClientRect();
+              if(r.bottom<-120||r.top>vh+120) continue;
+              var off=((r.top+r.height/2)-vh/2)*sp*-1;
+              if(off>mx)off=mx; else if(off<-mx)off=-mx;
+              el.style.transform='translate3d(0,'+off.toFixed(1)+'px,0)';
+            }
+          };
+          addEventListener('scroll',function(){ if(!pxTick){pxTick=true;requestAnimationFrame(pxApply);} },{passive:true});
+          addEventListener('resize',pxApply,{passive:true});
+          pxApply();
         }
       }
     }catch(e){}
