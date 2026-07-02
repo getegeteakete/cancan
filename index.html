@@ -496,8 +496,11 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal{opacity:1;transform:none}
+  .reveal{opacity:1;transform:none;filter:none!important}
   .hero-eyebrow,.hero-title,.hero-sub,.hero-line,.hero-cta,.scroll-hint{opacity:1;animation:none}
+  .hero-title .ch,.hero-title.split{opacity:1!important;filter:none!important;transform:none!important}
+  .mask-rise{clip-path:none!important}
+  #glow,.embers{display:none!important}
 }
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
@@ -596,6 +599,145 @@ html{scrollbar-color:var(--ink-3) var(--ink);scrollbar-width:thin}
 @media(max-width:560px){
   .info-card{padding:26px 22px}
   body::before{background:radial-gradient(140% 100% at 50% 8%,transparent 66%,rgba(0,0,0,0.28) 100%)}
+}
+
+/* ============================================================
+   ✦✦ Cinematic layer ── 既存の所作を「映画の照明」の精度へ
+   ============================================================ */
+
+/* [1] 温度のある光の階調（ベタ黒背景に間接照明の奥行き） */
+body{
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(168,58,44,0.06), transparent 55%),
+    var(--ink);
+  background-attachment:fixed;
+}
+.section::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg, rgba(239,231,214,0.018), transparent 30%);
+}
+.section > .container{position:relative;z-index:1}
+
+/* [5] 影のトークン化（単層フラット→温色2層＋エッジライト） */
+:root{--shadow-card:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.28),0 24px 60px rgba(20,8,4,.35)}
+.info-card{box-shadow:inset 0 1px 0 rgba(239,231,214,.06)}
+.info-card:hover{box-shadow:var(--shadow-card),0 20px 50px rgba(207,58,55,.12),inset 0 1px 0 rgba(239,231,214,.08)}
+.map-card{box-shadow:var(--shadow-card)}
+
+/* [4] 端で消えるヘアライン */
+.gallery,.info{
+  border-top:1px solid transparent;border-bottom:1px solid transparent;
+  border-image:linear-gradient(90deg,transparent,var(--line) 16%,var(--line) 84%,transparent) 1;
+}
+
+/* [3] タイポの精度（等幅数字・均一ドットリーダー・ドロップキャップ） */
+.mitem .price{font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1}
+.mitem .dots{
+  border-bottom:0;transform:none;height:1em;align-self:flex-end;
+  color:rgba(207,58,55,.42);
+  background:radial-gradient(currentColor 1px,transparent 1.6px);
+  background-size:6px 6px;background-position:0 100%;background-repeat:repeat-x;
+}
+.lead::first-letter{
+  font-family:var(--serif);font-style:italic;font-size:3.4em;line-height:.78;
+  float:left;margin:.02em .14em 0 0;color:var(--gold);
+}
+.sec-title,.hero-title,.cta-title,.hero-sub,.lead{text-wrap:balance}
+
+/* [6] ナビ下線を scaleX の「描かれる」動きへ／FAB脈動を静かな呼吸へ */
+nav.main a::after{width:100%;transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+nav.main a:hover::after{width:100%;transform:scaleX(1)}
+.concierge-fab{animation:pulse 4.6s ease-in-out infinite}
+@keyframes pulse{0%{box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 0 0 rgba(168,58,44,.4)}70%{box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 0 10px rgba(168,58,44,0)}100%{box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 0 0 rgba(168,58,44,0)}}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4fbf6a;margin-right:7px;vertical-align:middle;box-shadow:0 0 8px rgba(79,191,106,.7);animation:live 1.8s ease-in-out infinite}
+@keyframes live{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* [7] グレインを映画のように微振動させる */
+body::after{animation:grain .55s steps(3) infinite}
+@keyframes grain{0%{transform:translate(0,0)}33%{transform:translate(-2%,2%)}66%{transform:translate(2%,-2%)}100%{transform:translate(-2%,-2%)}}
+
+/* [8] ヒーロー見出しの発光を「照明に照らされた立体」へ＋Ken Burnsの方向差 */
+.hero-title{text-shadow:0 1px 0 rgba(0,0,0,.4),0 2px 18px rgba(0,0,0,.55),0 0 60px rgba(240,120,116,.18)}
+.hero-slide:nth-child(3n+1).active{animation-name:kb1}
+.hero-slide:nth-child(3n+2).active{animation-name:kb2}
+.hero-slide:nth-child(3n+3).active{animation-name:kb3}
+@keyframes kb1{from{transform:scale(1.00) translate(0,0)}to{transform:scale(1.10) translate(-1.5%,1%)}}
+@keyframes kb2{from{transform:scale(1.05) translate(1%,0)}to{transform:scale(1.13) translate(-1%,-1.5%)}}
+@keyframes kb3{from{transform:scale(1.03) translate(-1%,.5%)}to{transform:scale(1.11) translate(1.5%,1%)}}
+
+/* [9] ヒーロー見出しを一文字ずつ灯す */
+.hero-title.split{opacity:1;animation:none}
+.hero-title .ch{
+  display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.35em);
+  animation:charIn .9s cubic-bezier(.2,.7,.2,1) forwards;
+  animation-delay:calc(.35s + var(--i,0)*55ms);
+}
+.hero-title .ch.em{color:var(--gold-2)}
+@keyframes charIn{to{opacity:1;filter:blur(0);transform:none}}
+
+/* [2] reveal をブラー・イン（霧が晴れる質感） */
+.reveal{filter:blur(6px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1),filter 1s cubic-bezier(.2,.7,.2,1)}
+.reveal.vis{filter:blur(0)}
+
+/* [10] 写真を「幕が開くように」見せる clip-path マスク・リビール */
+.mask-rise{clip-path:inset(0 100% 0 0);transition:clip-path 1.15s cubic-bezier(.7,0,.2,1)}
+.about-figure.vis .mask-rise,.photo-grid.vis .mask-rise{clip-path:inset(0 0 0 0)}
+
+/* [13] ランタン追従グロー（マウスの周りだけを照らす） */
+#glow{
+  position:fixed;top:0;left:0;width:340px;height:340px;border-radius:50%;
+  pointer-events:none;z-index:297;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(207,58,55,.10),transparent 60%);
+  opacity:0;transition:opacity .6s ease;will-change:transform;
+}
+#glow.on{opacity:1}
+
+/* [18] ヒーローに漂う極薄の火の粉 */
+.embers{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.embers span{
+  position:absolute;bottom:-12px;left:var(--x,50%);
+  width:var(--size,3px);height:var(--size,3px);border-radius:50%;
+  background:var(--gold-2);filter:blur(.5px);opacity:0;
+  animation:emberFloat var(--dur,20s) linear var(--delay,0s) infinite;
+}
+@keyframes emberFloat{0%{opacity:0;transform:translateY(0) translateX(0)}12%{opacity:.4}86%{opacity:.32}100%{opacity:0;transform:translateY(-86vh) translateX(16px)}}
+
+/* [16] 番号付き縦セクション・レール（現在地インジケータ） */
+.srail{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:15px}
+.srail a{display:flex;align-items:center;font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted);text-decoration:none;transition:color .4s ease}
+.srail a::before{content:"";width:0;height:1px;background:var(--gold);margin-right:0;transition:width .4s ease,margin .4s ease}
+.srail a:hover{color:var(--gold-2)}
+.srail a.active{color:var(--gold)}
+.srail a.active::before{width:20px;margin-right:9px}
+@media(max-width:1200px){.srail{display:none}}
+
+/* [15] ギャラリー映画的ライトボックス */
+.photo-grid .cell img{cursor:zoom-in}
+#lb{
+  position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;
+  background:rgba(8,6,4,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+#lb.open{display:flex}
+#lb img{max-width:92vw;max-height:86vh;object-fit:contain;box-shadow:0 30px 90px rgba(0,0,0,.7);opacity:0;transform:scale(.94);transition:opacity .4s ease,transform .4s ease;cursor:default}
+#lb.show img{opacity:1;transform:scale(1)}
+#lb button{position:absolute;background:rgba(12,9,6,.5);border:1px solid var(--line);color:var(--cream);cursor:pointer;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;transition:all .3s ease}
+#lb button:hover{border-color:var(--gold);color:var(--gold-2);background:rgba(207,58,55,.12)}
+#lb .lb-x{top:22px;right:22px}
+#lb .lb-nav{top:50%;transform:translateY(-50%)}
+#lb .lb-prev{left:18px}
+#lb .lb-next{right:18px}
+@media(max-width:560px){#lb .lb-nav{top:auto;bottom:22px;transform:none}#lb .lb-prev{left:50%;margin-left:-58px}#lb .lb-next{right:50%;margin-right:-58px}}
+
+/* [17] FAQ アコーディオンの滑らか展開（対応ブラウザのみ） */
+.faq-item summary{transition:color .3s ease}
+.faq-item[open] > summary{color:var(--gold-2)}
+@supports(interpolate-size:allow-keywords){
+  :root{interpolate-size:allow-keywords}
+  .faq-item::details-content{
+    block-size:0;overflow:hidden;opacity:0;
+    transition:block-size .42s ease,opacity .42s ease,content-visibility .42s allow-discrete;
+  }
+  .faq-item[open]::details-content{block-size:auto;opacity:1}
 }
 </style>
 <script type="application/ld+json">
@@ -1094,6 +1236,165 @@ html{scrollbar-color:var(--ink-3) var(--ink);scrollbar-width:thin}
   document.getElementById('cchips').addEventListener('click',function(e){
     var b=e.target.closest('.chip');if(!b)return;send(b.getAttribute('data-q'));
   });
+
+  /* ============================================================
+     ✦✦ Cinematic layer ── JS（要素追加は全てここで。reduced-motion/タッチを尊重）
+     ============================================================ */
+  (function(){
+    var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var FINE = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+
+    /* [9] ヒーロー見出しを一文字ずつ灯す（<em>の色と<br>を保持） */
+    try{
+      if(!RM){
+        var ht=document.querySelector('.hero-title');
+        if(ht){
+          var i=0, frag=[];
+          (function walk(node,isEm){
+            [].forEach.call(node.childNodes,function(c){
+              if(c.nodeType===3){
+                c.textContent.split('').forEach(function(ch){
+                  var s=document.createElement('span');
+                  s.className='ch'+(isEm?' em':'');
+                  s.style.setProperty('--i', i++);
+                  s.textContent=ch;
+                  frag.push(s);
+                });
+              } else if(c.nodeName==='BR'){ frag.push(document.createElement('br')); }
+              else if(c.nodeName==='EM'){ walk(c, true); }
+            });
+          })(ht,false);
+          ht.textContent='';
+          frag.forEach(function(x){ht.appendChild(x);});
+          ht.classList.add('split');
+        }
+      }
+    }catch(e){}
+
+    /* [10] 写真の幕開けマスク・リビール（既存reveal観測子の親.visを起点にCSSで発火） */
+    try{
+      var af=document.querySelector('.about-figure img');
+      if(af){ af.classList.add('mask-rise'); }
+      [].forEach.call(document.querySelectorAll('.photo-grid .cell img'),function(img,idx){
+        img.classList.add('mask-rise');
+        img.style.transitionDelay=(idx*90)+'ms';
+      });
+    }catch(e){}
+
+    /* [2] メニュー/情報カードの reveal をスタガー化 */
+    try{
+      [].forEach.call(document.querySelectorAll('.menu-grid > .reveal'),function(el,idx){el.style.transitionDelay=(idx*90)+'ms';});
+      [].forEach.call(document.querySelectorAll('.info-grid > .reveal'),function(el,idx){el.style.transitionDelay=(idx*120)+'ms';});
+    }catch(e){}
+
+    /* [12] ヒーロー軽量パララックス（背景は遅く、文字は速く抜けフェード） */
+    try{
+      if(!RM){
+        var hero=document.querySelector('.hero'),
+            slider=document.getElementById('heroSlider'),
+            hc=document.querySelector('.hero-content'), sy=0, tick=false;
+        if(hero&&slider&&hc){
+          slider.style.willChange='transform'; hc.style.willChange='transform,opacity';
+          var apply=function(){
+            tick=false; var h=hero.offsetHeight;
+            if(sy<=h+60){
+              slider.style.transform='translate3d(0,'+(sy*0.12)+'px,0) scale(1.14)';
+              hc.style.transform='translate3d(0,'+(sy*-0.22)+'px,0)';
+              hc.style.opacity=String(Math.max(0,1-sy/650));
+            }
+          };
+          window.addEventListener('scroll',function(){ sy=window.scrollY||window.pageYOffset; if(!tick){tick=true;requestAnimationFrame(apply);} },{passive:true});
+        }
+      }
+    }catch(e){}
+
+    /* [13] ランタン追従グロー（マウス端末のみ） */
+    try{
+      if(FINE && !RM){
+        var glow=document.createElement('div'); glow.id='glow'; glow.setAttribute('aria-hidden','true');
+        document.body.appendChild(glow);
+        var gx=innerWidth/2, gy=innerHeight/2, tx=gx, ty=gy, on=false;
+        addEventListener('mousemove',function(e){ tx=e.clientX; ty=e.clientY; if(!on){on=true;glow.classList.add('on');} },{passive:true});
+        addEventListener('mouseout',function(e){ if(!e.relatedTarget&&!e.toElement){on=false;glow.classList.remove('on');} });
+        (function loop(){ gx+=(tx-gx)*0.12; gy+=(ty-gy)*0.12; glow.style.transform='translate('+gx+'px,'+gy+'px) translate(-50%,-50%)'; requestAnimationFrame(loop); })();
+      }
+    }catch(e){}
+
+    /* [18] ヒーローの火の粉（少数・極薄・決定的な配置） */
+    try{
+      if(!RM && innerWidth>560){
+        var heroEl=document.querySelector('.hero');
+        if(heroEl){
+          var emb=document.createElement('div'); emb.className='embers'; emb.setAttribute('aria-hidden','true');
+          for(var k=0;k<10;k++){
+            var s=document.createElement('span');
+            s.style.setProperty('--x', (((k*9.7+7)%94)+3).toFixed(0)+'%');
+            s.style.setProperty('--dur', (14+((k*2.3)%12)).toFixed(1)+'s');
+            s.style.setProperty('--delay', (-(k*1.7)).toFixed(1)+'s');
+            s.style.setProperty('--size', (2+(k%3))+'px');
+            emb.appendChild(s);
+          }
+          heroEl.appendChild(emb);
+        }
+      }
+    }catch(e){}
+
+    /* [16] 番号付き縦セクション・レール */
+    try{
+      var secs=[['about','01'],['gallery','02'],['menu','03'],['info','04'],['access','05'],['faq','06']];
+      var rail=document.createElement('nav'); rail.className='srail'; rail.setAttribute('aria-label','セクション');
+      var links={};
+      secs.forEach(function(p){ var a=document.createElement('a'); a.href='#'+p[0]; a.textContent=p[1]; a.setAttribute('aria-label',p[0]); rail.appendChild(a); links[p[0]]=a; });
+      document.body.appendChild(rail);
+      var sObs=new IntersectionObserver(function(es){
+        es.forEach(function(x){ if(x.isIntersecting){ for(var key in links){links[key].classList.remove('active');} if(links[x.target.id])links[x.target.id].classList.add('active'); } });
+      },{rootMargin:'-45% 0px -45% 0px', threshold:0});
+      secs.forEach(function(p){ var el=document.getElementById(p[0]); if(el)sObs.observe(el); });
+    }catch(e){}
+
+    /* [6] OPEN NOW ライブドット（既存hoursStatusが「営業中」の時のみ） */
+    try{
+      var hs=document.getElementById('hoursStatus');
+      if(hs && /営業中/.test(hs.textContent)){ var d=document.createElement('span'); d.className='live-dot'; hs.insertBefore(d, hs.firstChild); }
+    }catch(e){}
+
+    /* [15] ギャラリー ライトボックス */
+    try{
+      var imgs=[].slice.call(document.querySelectorAll('.photo-grid .cell img'));
+      if(imgs.length){
+        var lb=document.createElement('div'); lb.id='lb';
+        lb.innerHTML='<button class="lb-x" aria-label="閉じる">&times;</button><button class="lb-nav lb-prev" aria-label="前の写真">&#8249;</button><img alt=""><button class="lb-nav lb-next" aria-label="次の写真">&#8250;</button>';
+        document.body.appendChild(lb);
+        var limg=lb.querySelector('img'), cur=0;
+        var show=function(n){ cur=(n+imgs.length)%imgs.length; limg.src=imgs[cur].currentSrc||imgs[cur].src; lb.classList.add('open'); requestAnimationFrame(function(){lb.classList.add('show');}); document.body.style.overflow='hidden'; };
+        var hide=function(){ lb.classList.remove('show'); document.body.style.overflow=''; setTimeout(function(){lb.classList.remove('open');},380); };
+        imgs.forEach(function(img,idx){ img.addEventListener('click',function(){show(idx);}); });
+        lb.querySelector('.lb-x').addEventListener('click',hide);
+        lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(cur-1);});
+        lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(cur+1);});
+        lb.addEventListener('click',function(e){ if(e.target===lb)hide(); });
+        addEventListener('keydown',function(e){ if(!lb.classList.contains('open'))return; if(e.key==='Escape')hide(); else if(e.key==='ArrowLeft')show(cur-1); else if(e.key==='ArrowRight')show(cur+1); });
+      }
+    }catch(e){}
+
+    /* [14] 主要CTAのマグネティック・ホバー（マウス端末のみ） */
+    try{
+      if(FINE && !RM){
+        [].forEach.call(document.querySelectorAll('.btn-solid, .btn-book'),function(btn){
+          btn.addEventListener('pointermove',function(e){
+            var r=btn.getBoundingClientRect();
+            var dx=e.clientX-(r.left+r.width/2), dy=e.clientY-(r.top+r.height/2);
+            btn.style.transition='transform .08s linear';
+            btn.style.transform='translate('+(dx*0.22)+'px,'+((dy*0.28)-2)+'px)';
+          });
+          btn.addEventListener('pointerleave',function(){
+            btn.style.transition='transform .5s cubic-bezier(.2,1.2,.3,1)';
+            btn.style.transform='';
+          });
+        });
+      }
+    }catch(e){}
+  })();
 </script>
 </body>
 </html>
