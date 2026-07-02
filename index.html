@@ -789,6 +789,45 @@ body::after{animation:grain .55s steps(3) infinite}
   .course-band{padding:30px 22px 26px}
   .course-list{grid-template-columns:1fr;gap:0}
 }
+
+/* ヒーロー直下の料理ムービー */
+.dish-film{position:relative;background:var(--ink);padding:34px 0 10px}
+.dish-film .film-wrap{position:relative;max-width:1160px;margin:0 auto;padding:0 32px}
+.dish-film .film-inner{
+  position:relative;overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--shadow-card, 0 24px 60px rgba(0,0,0,.4));
+  aspect-ratio:16/9;background:#0a0705;
+}
+.dish-film video{display:block;width:100%;height:100%;object-fit:cover}
+.dish-film .film-inner::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(12,9,6,.28),transparent 26%,transparent 60%,rgba(12,9,6,.66));
+}
+.dish-film .film-corner::before,.dish-film .film-corner::after{
+  content:"";position:absolute;width:16px;height:16px;border:1px solid var(--gold);z-index:3;pointer-events:none;
+}
+.dish-film .film-corner::before{top:12px;left:12px;border-right:0;border-bottom:0}
+.dish-film .film-corner::after{bottom:12px;right:12px;border-left:0;border-top:0}
+.dish-film .film-label{
+  position:absolute;left:20px;bottom:16px;z-index:4;
+  font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#fff;
+  display:flex;align-items:center;gap:11px;text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+.dish-film .film-label::before{content:"";width:26px;height:1px;background:var(--gold)}
+.dish-film .film-label em{font-family:var(--mincho);font-style:normal;letter-spacing:.08em;font-size:13px;color:var(--cream)}
+.dish-film .film-sound{
+  position:absolute;right:16px;bottom:16px;z-index:4;width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(239,231,214,.5);background:rgba(12,9,6,.5);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  backdrop-filter:blur(4px);transition:border-color .3s,color .3s,background .3s;
+}
+.dish-film .film-sound:hover{border-color:var(--gold);color:var(--gold-2)}
+@media(max-width:560px){
+  .dish-film{padding:22px 0 6px}
+  .dish-film .film-wrap{padding:0 16px}
+  .dish-film .film-label{left:14px;bottom:12px;font-size:10px;letter-spacing:.2em}
+  .dish-film .film-sound{width:38px;height:38px;right:12px;bottom:12px}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -935,6 +974,19 @@ body::after{animation:grain .55s steps(3) infinite}
   </div>
   <div class="hero-dots" id="heroDots"></div>
   <div class="scroll-hint"><span>Scroll</span><span class="dot"></span></div>
+</section>
+
+<!-- DISH FILM (ヒーロー直下の料理ムービー) -->
+<section class="dish-film reveal" aria-label="お料理の動画">
+  <div class="film-wrap">
+    <div class="film-inner">
+      <video id="dishFilm" src="assets/video/dish.mp4" poster="assets/img/video-poster.jpg"
+             muted loop playsinline preload="none" tabindex="-1"></video>
+      <span class="film-corner" aria-hidden="true"></span>
+      <span class="film-label"><em>本日の一皿</em> Cantina Kitchen</span>
+      <button class="film-sound" id="filmSound" aria-label="音声のオン/オフ"><i class="fas fa-volume-xmark"></i></button>
+    </div>
+  </div>
 </section>
 
 <!-- FOOD MARQUEE -->
@@ -1606,6 +1658,28 @@ body::after{animation:grain .55s steps(3) infinite}
             btn.style.transform='';
           });
         });
+      }
+    }catch(e){}
+
+    /* 料理ムービー: 画面内で再生・画面外で停止（データ節約）＋音声トグル */
+    try{
+      var film=document.getElementById('dishFilm');
+      if(film){
+        var vObs=new IntersectionObserver(function(es){
+          es.forEach(function(x){
+            if(x.isIntersecting){ film.play().catch(function(){}); }
+            else{ film.pause(); }
+          });
+        },{threshold:0.4});
+        vObs.observe(film);
+        var sbtn=document.getElementById('filmSound');
+        if(sbtn){
+          sbtn.addEventListener('click',function(){
+            film.muted=!film.muted;
+            if(!film.muted){ film.play().catch(function(){}); }
+            sbtn.innerHTML = film.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>';
+          });
+        }
       }
     }catch(e){}
   })();
