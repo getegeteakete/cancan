@@ -516,6 +516,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   "currenciesAccepted":"JPY",
   "paymentAccepted":"現金, クレジットカード",
   "acceptsReservations":"True",
+  "telephone":"+81-92-712-0745",
   "address":{
     "@type":"PostalAddress",
     "streetAddress":"赤坂2-3-28",
@@ -732,6 +733,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
       </div>
       <div class="info-card reveal">
         <h3>連絡先・アクセス</h3>
+        <div class="irow"><div class="ilabel">電話</div><div class="ivalue"><a href="tel:092-712-0745">092-712-0745</a><br><small>ご予約・お問い合わせはお電話でもどうぞ</small></div></div>
         <div class="irow"><div class="ilabel">住所</div><div class="ivalue">福岡県福岡市中央区赤坂 2-3-28</div></div>
         <div class="irow"><div class="ilabel">交通</div><div class="ivalue">地下鉄空港線「赤坂駅」2番出口 徒歩9分<br><small>赤坂2丁目バス停より徒歩約1分</small></div></div>
         <div class="irow"><div class="ilabel">Instagram</div><div class="ivalue"><a href="https://www.instagram.com/cantinaakasaka/" target="_blank" rel="noopener">@cantinaakasaka</a></div></div>
@@ -819,6 +821,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
+        <p><i class="fas fa-phone"></i> <a href="tel:092-712-0745" style="text-decoration:none">092-712-0745</a></p>
         <p><i class="fas fa-clock"></i> 18:00 〜 翌0:00</p>
         <p><i class="fas fa-calendar-xmark"></i> 日曜・祝日定休（一部不定休）</p>
         <p><i class="fas fa-location-dot"></i> 福岡市中央区赤坂 2-3-28</p>
@@ -917,6 +920,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   var HOTPEPPER="https://www.hotpepper.jp/strJ000670170/";
   var MAPS="https://maps.app.goo.gl/XTVVBCYCCG18QL4N6";
   var IG="https://www.instagram.com/cantinaakasaka/";
+  var TEL="092-712-0745";
 
   var fab=document.getElementById('cfab'),chat=document.getElementById('chat'),
       cbody=document.getElementById('cbody'),cinput=document.getElementById('cinput');
@@ -933,9 +937,9 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
     q=(q||'').toLowerCase();
     var has=function(){for(var i=0;i<arguments.length;i++){if(q.indexOf(arguments[i])>=0)return true;}return false;};
     if(has('インスタ','instagram','dm','ダイレクト','sns'))
-      return '申し訳ありません、Instagramではご予約を承っておりません🙏 ご予約はお電話、またはホットペッパーグルメからお願いいたします。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
-    if(has('予約','よやく','reserve','booking','席'))
-      return 'ぜひお越しくださいね😊 ご予約はお電話、またはホットペッパーグルメにて承っております（Instagramではご予約を受け付けておりません）。個室や貸切のご相談もお気軽に。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
+      return '申し訳ありません、Instagramではご予約を承っておりません🙏 ご予約はお電話（<a href="tel:'+TEL+'">'+TEL+'</a>）、またはホットペッパーグルメからお願いいたします。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
+    if(has('予約','よやく','reserve','booking','席','電話'))
+      return 'ぜひお越しくださいね😊 ご予約はお電話（<a href="tel:'+TEL+'">'+TEL+'</a>）、またはホットペッパーグルメにて承っております（Instagramではご予約を受け付けておりません）。個室や貸切のご相談もお気軽に。<br><a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>';
     if(has('時間','営業','何時','open','定休','休み'))
       return '営業は夜18:00〜翌0:00（ラストオーダー23:30）です🌙 日曜・祝日はお休み（たまに不定休もございます）。仕事帰りに、ふらりとどうぞ。';
     if(has('アクセス','場所','どこ','駅','行き方','住所','map','地図'))
@@ -950,7 +954,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
       return '現金・クレジットカードがご利用いただけます💳 その他はお気軽に店頭でお尋ねくださいね。';
     if(has('駐車','パーキング','車'))
       return '申し訳ありません、専用の駐車場はないのですが、近くにコインパーキングがございます🚗 ゆっくり飲まれる際は公共交通機関も安心ですよ。';
-    return 'お問い合わせありがとうございます😊 ご予約はお電話、またはホットペッパーグルメより承っております（Instagramではご予約を受け付けておりません）。<a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>。営業時間・アクセス・おすすめなど、なんでも気軽に聞いてくださいね。';
+    return 'お問い合わせありがとうございます😊 ご予約はお電話（<a href="tel:'+TEL+'">'+TEL+'</a>）、またはホットペッパーグルメより承っております（Instagramではご予約を受け付けておりません）。<a href="'+HOTPEPPER+'" target="_blank" rel="noopener">▸ ホットペッパーで予約</a>。営業時間・アクセス・おすすめなど、なんでも気軽に聞いてくださいね。';
   }
   function respond(q){
     if(CONCIERGE_API){
