@@ -93,7 +93,7 @@ h1.page{font-family:var(--serif);font-weight:500;font-size:clamp(34px,7vw,52px);
     document.title='ブログ｜カンティーナ赤坂 — 福岡赤坂のバー食堂';
     setLD(null);
     var items=POSTS.map(function(p){
-      return '<a class="post-card" href="#'+encodeURIComponent(p.slug)+'">'+
+      return '<a class="post-card" href="/blog/'+encodeURIComponent(p.slug)+'/">'+
         '<div class="date">'+esc(p.date)+'</div>'+
         '<h2>'+esc(p.title)+'</h2>'+
         '<p>'+esc(p.excerpt)+'</p>'+

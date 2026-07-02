@@ -7,6 +7,13 @@
 //   ADMIN_PASSWORD    : 管理画面から「今すぐ公開」する際の認証（任意）
 //
 // Vercel Cron は vercel.json の crons 設定で毎日呼び出されます。
+//
+// 生成時に以下を同時に更新します（SEO対策）:
+//   1. blog/posts.json                … 記事データ（SPA一覧＆記事ビュー用）
+//   2. blog/<slug>/index.html         … クロール可能な静的記事ページ（正規URL・OGP・構造化データ付き）
+//   3. sitemap.xml                    … トップ＋一覧＋全記事URLを再生成
+
+import { articlePageHtml, sitemapXml } from "./lib/article-template.mjs";
 
 const FACTS =
   "店名:カンティーナ赤坂(Cantina Akasaka)/福岡市中央区赤坂2-3-28/地下鉄「赤坂駅」2番出口 徒歩9分/" +
@@ -92,29 +99,52 @@ export default async function handler(req, res) {
     const topicOverride = (req.body && req.body.topic) || null;
     const art = await generateArticle(key, topicOverride);
 
-    const api = "https://api.github.com/repos/" + repo + "/contents/blog/posts.json";
+    const base = "https://api.github.com/repos/" + repo + "/contents/";
     const ghHeaders = { Authorization: "Bearer " + gh, "User-Agent": "cantina-cron", Accept: "application/vnd.github+json" };
 
-    const getR = await fetch(api, { headers: ghHeaders });
-    const cur = await getR.json();
-    let json = { posts: [] }, sha = undefined;
-    if (cur && cur.content) {
-      json = JSON.parse(Buffer.from(cur.content, "base64").toString("utf8"));
-      sha = cur.sha;
+    // 既存ファイルのsha取得（新規時はundefined）
+    async function getSha(path) {
+      const r = await fetch(base + path, { headers: ghHeaders });
+      if (!r.ok) return { sha: undefined, json: null };
+      const j = await r.json();
+      return { sha: j.sha, json: j };
     }
+    // ファイルの作成/更新
+    async function putFile(path, contentStr, message) {
+      const { sha } = await getSha(path);
+      const r = await fetch(base + path, {
+        method: "PUT",
+        headers: { ...ghHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ message, content: Buffer.from(contentStr).toString("base64"), sha }),
+      });
+      const d = await r.json();
+      if (!d.commit) throw new Error((path + ": ") + (d.message || JSON.stringify(d)));
+      return d;
+    }
+
+    // 1) posts.json を更新
+    const cur = await getSha("blog/posts.json");
+    let json = { posts: [] };
+    if (cur.json && cur.json.content) json = JSON.parse(Buffer.from(cur.json.content, "base64").toString("utf8"));
     json.posts = json.posts || [];
     json.posts.unshift(art);
     json.posts = json.posts.slice(0, 90); // 直近90本を保持
+    await putFile("blog/posts.json", JSON.stringify(json, null, 2), "blog: 自動記事 " + art.date + " " + art.title);
 
-    const newContent = Buffer.from(JSON.stringify(json, null, 2)).toString("base64");
-    const putR = await fetch(api, {
-      method: "PUT",
-      headers: { ...ghHeaders, "Content-Type": "application/json" },
-      body: JSON.stringify({ message: "blog: 自動記事 " + art.date + " " + art.title, content: newContent, sha }),
+    // 2) 静的記事ページ & 3) サイトマップ（失敗しても記事公開自体は成功扱いに）
+    const warnings = [];
+    try {
+      await putFile("blog/" + art.slug + "/index.html", articlePageHtml(art), "blog: 静的記事ページ " + art.slug);
+    } catch (e) { warnings.push("static-page: " + String(e.message || e)); }
+    try {
+      await putFile("sitemap.xml", sitemapXml(json.posts, { today: art.date }), "seo: sitemap更新 " + art.date);
+    } catch (e) { warnings.push("sitemap: " + String(e.message || e)); }
+
+    return res.status(200).json({
+      ok: true, slug: art.slug, title: art.title, date: art.date,
+      url: "/blog/" + art.slug + "/",
+      warnings: warnings.length ? warnings : undefined,
     });
-    const putData = await putR.json();
-    if (putData.commit) return res.status(200).json({ ok: true, slug: art.slug, title: art.title, date: art.date });
-    return res.status(500).json({ error: "GitHubへの保存に失敗しました。", detail: putData.message || putData });
   } catch (e) {
     return res.status(500).json({ error: "生成に失敗しました: " + String(e) });
   }
