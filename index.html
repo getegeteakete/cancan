@@ -277,10 +277,19 @@ nav.main a:hover::after{width:100%}
   opacity:0;animation:rise 1.2s ease .35s forwards;
 }
 .hero-title em{font-style:italic;color:var(--gold-2)}
+.hero-copy{
+  font-family:var(--mincho);font-weight:700;
+  font-size:clamp(21px,4.6vw,40px);line-height:1.5;letter-spacing:.05em;
+  color:#fff;margin-top:24px;word-break:keep-all;overflow-wrap:break-word;
+  text-shadow:0 2px 16px rgba(0,0,0,.62),0 0 44px rgba(0,0,0,.4);
+  opacity:0;animation:rise 1.2s ease .55s forwards;
+}
+.hero-copy em{font-style:normal;color:var(--gold-2);white-space:nowrap}
 .hero-sub{
-  font-family:var(--mincho);font-weight:500;font-size:clamp(15px,2.4vw,20px);
-  letter-spacing:0.42em;color:rgba(239,231,214,0.86);margin-top:20px;
-  opacity:0;animation:rise 1.2s ease .5s forwards;
+  font-family:var(--mincho);font-weight:500;font-size:clamp(13px,2vw,16px);
+  letter-spacing:0.16em;color:rgba(239,231,214,0.82);margin-top:16px;
+  word-break:keep-all;overflow-wrap:break-word;
+  opacity:0;animation:rise 1.2s ease .7s forwards;
 }
 .hero-line{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);margin:30px auto 0;opacity:0;animation:rise 1.2s ease .65s forwards}
 .hero-cta{margin-top:34px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:rise 1.2s ease .8s forwards}
@@ -581,7 +590,7 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none!important}
-  .hero-eyebrow,.hero-title,.hero-sub,.hero-line,.hero-cta,.scroll-hint{opacity:1;animation:none}
+  .hero-eyebrow,.hero-title,.hero-copy,.hero-sub,.hero-line,.hero-cta,.scroll-hint{opacity:1;animation:none}
   .hero-title .ch,.hero-title.split{opacity:1!important;filter:none!important;transform:none!important}
   .mask-rise{clip-path:none!important}
   #glow,.embers{display:none!important}
@@ -990,7 +999,8 @@ body::after{animation:grain .55s steps(3) infinite}
   <div class="hero-content">
     <div class="hero-eyebrow">Whisky · Wine · Kitchen</div>
     <h1 class="hero-title">Cantina<br><em>Akasaka</em></h1>
-    <div class="hero-sub">福岡 赤坂 ─ 大人のバー食堂</div>
+    <p class="hero-copy">うまい飯と、いい酒と、<em>生の音楽</em>。</p>
+    <div class="hero-sub">赤坂に根ざして半世紀 ── ひとりでも、心ゆくまで</div>
     <div class="hero-line"></div>
     <div class="hero-cta">
       <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="btn-solid"><i class="fas fa-calendar-check"></i> ご予約</a>
