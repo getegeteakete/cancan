@@ -254,22 +254,21 @@ nav.main a:hover::after{width:100%}
 .hero-frame::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
 .hero-content{position:relative;z-index:4;text-align:center;padding:0 24px}
 .hero-eyebrow{
-  font-family:var(--sans);font-size:12px;letter-spacing:0.5em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:26px;opacity:0;animation:floatIn 1.7s cubic-bezier(.2,.65,.25,1) .25s both;
+  font-family:var(--sans);font-size:clamp(12px,1.4vw,14px);letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:30px;opacity:0;animation:floatIn 1.8s cubic-bezier(.2,.65,.25,1) .25s both;
 }
 .hero-copy{
   font-family:var(--mincho);font-weight:700;
-  font-size:clamp(22px,4.6vw,40px);line-height:1.55;letter-spacing:.06em;
+  font-size:clamp(28px,5.6vw,56px);line-height:1.5;letter-spacing:.06em;
   color:#fff;margin-top:0;word-break:keep-all;overflow-wrap:break-word;
-  text-shadow:0 0 46px rgba(240,120,116,.14);
-  opacity:0;animation:floatIn 1.9s cubic-bezier(.2,.65,.25,1) .6s both;
+  opacity:0;animation:floatIn 2s cubic-bezier(.2,.65,.25,1) .6s both;
 }
 .hero-copy em{font-style:normal;color:var(--gold-2);white-space:nowrap}
 .hero-sub{
-  font-family:var(--mincho);font-weight:500;font-size:clamp(13px,2vw,16px);
-  letter-spacing:0.18em;color:rgba(239,231,214,0.82);margin-top:20px;
+  font-family:var(--mincho);font-weight:500;font-size:clamp(15px,2.3vw,19px);
+  letter-spacing:0.18em;color:rgba(239,231,214,0.94);margin-top:24px;
   word-break:keep-all;overflow-wrap:break-word;
-  opacity:0;animation:floatIn 1.9s cubic-bezier(.2,.65,.25,1) 1s both;
+  opacity:0;animation:floatIn 2s cubic-bezier(.2,.65,.25,1) 1.05s both;
 }
 .hero-line{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);margin:32px auto 0;opacity:0;animation:floatIn 1.6s cubic-bezier(.2,.65,.25,1) 1.35s both}
 .hero-cta{margin-top:34px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:floatIn 1.6s cubic-bezier(.2,.65,.25,1) 1.55s both}
@@ -296,7 +295,7 @@ nav.main a:hover::after{width:100%}
 .scroll-hint .dot{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:drop 1.8s ease-in-out infinite}
 @keyframes drop{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(8px);opacity:1}}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-@keyframes floatIn{0%{opacity:0;transform:translateY(30px);filter:blur(9px)}55%{filter:blur(0)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes floatIn{0%{opacity:0;transform:translateY(34px);filter:blur(18px)}35%{opacity:.5;filter:blur(10px)}72%{opacity:.92;filter:blur(2px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
 
 /* ---- about ---- */
 .about-grid{display:grid;grid-template-columns:0.82fr 1fr;gap:72px;align-items:center}
@@ -544,9 +543,10 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   .hero-dots{bottom:98px}
 }
 @media(max-width:560px){
-  .hero{height:auto;min-height:auto;padding:116px 0 78px}
+  .hero{height:auto;min-height:auto;padding:120px 0 84px}
   .hero-frame{inset:16px}
-  .hero-copy{font-size:clamp(22px,6.2vw,32px)}
+  .hero-copy{font-size:clamp(27px,7.6vw,40px)}
+  .hero-sub{font-size:clamp(14px,3.6vw,17px)}
   header{padding:0 20px;height:60px}
   header.scrolled{height:56px}
   .brand-logo{height:34px}
@@ -1038,10 +1038,6 @@ body::after{animation:grain .55s steps(3) infinite}
     <p class="hero-copy">うまい飯と、いい酒と、<em>生の音楽</em>。</p>
     <div class="hero-sub">赤坂に根ざして半世紀 ── ひとりでも、心ゆくまで</div>
     <div class="hero-line"></div>
-    <div class="hero-cta">
-      <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="btn-solid"><i class="fas fa-calendar-check"></i> ご予約</a>
-      <a href="#about" class="btn-ghost"><i class="fas fa-arrow-down"></i> 詳しく見る</a>
-    </div>
   </div>
   <div class="scroll-hint"><span>Scroll</span><span class="dot"></span></div>
 </section>
