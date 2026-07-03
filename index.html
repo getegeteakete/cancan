@@ -592,26 +592,8 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 .marquee-track img:hover{filter:saturate(1.1) brightness(1.05)}
 @media(max-width:560px){.marquee-track img{height:170px}.marquee-section{padding:16px 0}}
 
-/* ---- 店内の雰囲気スクロール(店主挨拶の上) ---- */
-.interior-marquee{background:var(--ink);padding:40px 0 34px}
-.interior-marquee .marquee-track img{height:250px;filter:saturate(1.0) brightness(0.9)}
-.interior-marquee .marquee-track img:hover{filter:saturate(1.06) brightness(1.02)}
-.marquee-head{max-width:1160px;margin:0 auto 24px;padding:0 32px;text-align:center}
-.marquee-head .mq-eyebrow{
-  display:inline-flex;align-items:center;gap:11px;
-  font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);
-}
-.marquee-head .mq-eyebrow::before,.marquee-head .mq-eyebrow::after{content:"";width:26px;height:1px;background:var(--gold);opacity:.7}
-.marquee-head .mq-title{
-  display:block;font-family:var(--mincho);font-weight:500;
-  font-size:clamp(18px,2.6vw,24px);letter-spacing:.08em;color:var(--cream);margin-top:13px;
-}
-@media(max-width:560px){
-  .interior-marquee{padding:26px 0 22px}
-  .interior-marquee .marquee-track img{height:190px}
-  .marquee-head{margin-bottom:16px;padding:0 20px}
-  .marquee-head .mq-title{font-size:clamp(16px,4.6vw,20px)}
-}
+/* ---- 店内の雰囲気スライダー ---- */
+.interior-sec .drink-slider{margin-top:0}
 
 /* ---- reveal ---- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -1210,28 +1192,20 @@ body::after{animation:grain .55s steps(3) infinite}
   </div>
 </section>
 
-<!-- INTERIOR GALLERY (店主挨拶の上・店内の雰囲気スクロール) -->
-<section class="marquee-section interior-marquee reveal" aria-label="店内の雰囲気">
-  <div class="marquee-head">
-    <span class="mq-eyebrow">Our Space</span>
-    <span class="mq-title">赤坂の片隅、半世紀の空気感</span>
-  </div>
-  <div class="marquee">
-    <div class="marquee-track" data-dir="right" data-speed="0.42">
-      <img loading="lazy" src="assets/img/img10.jpg" alt="カンティーナ赤坂の外観">
-      <img loading="lazy" src="assets/img/img11.jpg" alt="酒瓶が並ぶカウンターと店内">
-      <img loading="lazy" src="assets/img/img04.jpg" alt="カウンターに立つ店主">
-      <img loading="lazy" src="assets/img/img14.jpg" alt="使い込まれた一枚板のカウンター">
-      <img loading="lazy" src="assets/img/img15.jpg" alt="ウイスキーが並ぶ棚">
-      <img loading="lazy" src="assets/img/img13.jpg" alt="奥のテーブル席とギター">
-      <img loading="lazy" src="assets/img/img12.jpg" alt="レコードとCDが並ぶ棚">
-      <img loading="lazy" src="assets/img/img10.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img11.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img04.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img14.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img15.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img13.jpg" alt="" aria-hidden="true">
-      <img loading="lazy" src="assets/img/img12.jpg" alt="" aria-hidden="true">
+<!-- INTERIOR SLIDER (店内の雰囲気) -->
+<section class="section interior-sec" aria-label="店内の雰囲気">
+  <div class="container">
+    <div class="drink-slider ds-slider reveal" data-interval="4600">
+      <div class="ds-head"><h3>店内の雰囲気</h3><span class="en">Our Space</span></div>
+      <div class="ds-viewport">
+        <figure class="ds-slide active"><img src="assets/img/img11.jpg" alt="酒瓶が並ぶL字カウンターと店内" loading="lazy"><figcaption><span class="ds-en">Counter</span><span class="ds-ja">L字カウンター</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img14.jpg" alt="使い込まれた一枚板のカウンター" loading="lazy"><figcaption><span class="ds-en">At the Bar</span><span class="ds-ja">夜のカウンター</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img15.jpg" alt="ウイスキーが並ぶ棚" loading="lazy"><figcaption><span class="ds-en">Whisky Shelf</span><span class="ds-ja">ウイスキー棚</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img13.jpg" alt="奥のテーブル席とギター" loading="lazy"><figcaption><span class="ds-en">Table Seats</span><span class="ds-ja">奥のテーブル席</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img12.jpg" alt="レコードとCDが並ぶ棚" loading="lazy"><figcaption><span class="ds-en">Records &amp; Books</span><span class="ds-ja">レコードと本</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img04.jpg" alt="灯りのともるカウンターに立つ店主" loading="lazy"><figcaption><span class="ds-en">Master's Seat</span><span class="ds-ja">灯りのカウンター</span></figcaption></figure>
+        <div class="ds-dots"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1379,7 +1353,7 @@ body::after{animation:grain .55s steps(3) infinite}
         <div class="mitem"><span class="name">ソフトドリンク各種</span><span class="dots"></span><span class="price">¥500</span></div>
       </div>
     </div>
-    <div class="drink-slider reveal" aria-label="お酒のラインナップ">
+    <div class="drink-slider ds-slider reveal" data-interval="4200" aria-label="お酒のラインナップ">
       <div class="ds-head"><h3>お酒</h3><span class="en">Bar Selection</span></div>
       <div class="ds-viewport">
         <figure class="ds-slide active"><img src="assets/img/drink-whisky.jpg" alt="ロックで愉しむウイスキー" loading="lazy"><figcaption><span class="ds-en">Whisky</span><span class="ds-ja">国産・スコッチ豊富</span></figcaption></figure>
@@ -1659,27 +1633,29 @@ body::after{animation:grain .55s steps(3) infinite}
     });
   })();
 
-  /* ===== DRINK SLIDER (お酒のショーケース) ===== */
+  /* ===== SLIDERS (お酒 / 店内の雰囲気 など・複数対応) ===== */
   (function(){
-    var root=document.querySelector('.drink-slider'); if(!root) return;
-    var slides=root.querySelectorAll('.ds-slide'); if(slides.length<2) return;
-    var wrap=root.querySelector('#dsDots'), i=0, dots=[];
-    slides.forEach(function(_,k){
-      var b=document.createElement('button');
-      b.className='ds-dot'+(k===0?' active':'');
-      b.setAttribute('aria-label','ドリンク'+(k+1));
-      b.addEventListener('click',function(){ go(k); reset(); });
-      wrap.appendChild(b); dots.push(b);
-    });
-    function go(n){ slides[i].classList.remove('active'); dots[i].classList.remove('active'); i=n; slides[i].classList.add('active'); dots[i].classList.add('active'); }
     var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var timer=null;
-    function tick(){ go((i+1)%slides.length); }
-    function start(){ if(!reduce && !timer){ timer=setInterval(tick,4200); } }
-    function reset(){ if(timer){ clearInterval(timer); timer=null; } start(); }
-    root.addEventListener('mouseenter',function(){ if(timer){ clearInterval(timer); timer=null; } });
-    root.addEventListener('mouseleave',start);
-    start();
+    Array.prototype.forEach.call(document.querySelectorAll('.ds-slider'),function(root){
+      var slides=root.querySelectorAll('.ds-slide'); if(slides.length<2) return;
+      var wrap=root.querySelector('.ds-dots'); if(!wrap) return;
+      var interval=parseInt(root.getAttribute('data-interval'),10)||4200;
+      var i=0, dots=[], timer=null;
+      slides.forEach(function(_,k){
+        var b=document.createElement('button');
+        b.className='ds-dot'+(k===0?' active':'');
+        b.setAttribute('aria-label','スライド'+(k+1));
+        b.addEventListener('click',function(){ go(k); reset(); });
+        wrap.appendChild(b); dots.push(b);
+      });
+      function go(n){ slides[i].classList.remove('active'); dots[i].classList.remove('active'); i=n; slides[i].classList.add('active'); dots[i].classList.add('active'); }
+      function tick(){ go((i+1)%slides.length); }
+      function start(){ if(!reduce && !timer){ timer=setInterval(tick,interval); } }
+      function reset(){ if(timer){ clearInterval(timer); timer=null; } start(); }
+      root.addEventListener('mouseenter',function(){ if(timer){ clearInterval(timer); timer=null; } });
+      root.addEventListener('mouseleave',start);
+      start();
+    });
   })();
 
   /* ===== AI CONCIERGE ===== */
