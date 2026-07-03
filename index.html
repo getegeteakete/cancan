@@ -239,22 +239,10 @@ nav.main a:hover::after{width:100%}
 .mnav-hours{text-align:center;font-family:var(--sans);font-size:11px;letter-spacing:.14em;color:var(--muted)}
 
 /* ---- hero ---- */
-.hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-slider{position:absolute;inset:0;z-index:0}
-.hero-slide{
-  position:absolute;inset:0;background-size:cover;background-position:center 38%;
-  opacity:0;transition:opacity 1.6s ease;
-}
-.hero-slide.active{opacity:1;animation:heroZoom 7s ease-in-out forwards}
-@keyframes heroZoom{from{transform:scale(1.0)}to{transform:scale(1.09)}}
-.hero-dots{position:absolute;bottom:74px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:11px}
-.hero-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:background .3s,transform .3s}
-.hero-dot.active{background:var(--gold);transform:scale(1.15)}
+.hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
 .hero::before{
-  content:"";position:absolute;inset:0;z-index:1;
-  background:
-    radial-gradient(120% 90% at 50% 22%, rgba(207,58,55,0.16) 0%, rgba(207,58,55,0) 46%),
-    linear-gradient(to bottom, rgba(12,9,6,0.55) 0%, rgba(12,9,6,0.35) 40%, rgba(12,9,6,0.92) 100%);
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 78% at 50% 34%, rgba(207,58,55,0.05) 0%, rgba(0,0,0,0) 56%);
 }
 .hero-frame{
   position:absolute;inset:26px;z-index:3;border:1px solid rgba(207,58,55,0.28);pointer-events:none;
@@ -267,32 +255,24 @@ nav.main a:hover::after{width:100%}
 .hero-content{position:relative;z-index:4;text-align:center;padding:0 24px}
 .hero-eyebrow{
   font-family:var(--sans);font-size:12px;letter-spacing:0.5em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:22px;opacity:0;animation:rise 1.1s ease .2s forwards;
+  color:var(--gold);margin-bottom:26px;opacity:0;animation:floatIn 1.7s cubic-bezier(.2,.65,.25,1) .25s both;
 }
-.hero-title{
-  font-family:var(--serif);font-weight:400;
-  font-size:clamp(76px,15vw,168px);line-height:0.92;letter-spacing:0.04em;
-  color:#fff;
-  text-shadow:0 0 42px rgba(240,120,116,0.35),0 2px 20px rgba(0,0,0,0.5);
-  opacity:0;animation:rise 1.2s ease .35s forwards;
-}
-.hero-title em{font-style:italic;color:var(--gold-2)}
 .hero-copy{
   font-family:var(--mincho);font-weight:700;
-  font-size:clamp(21px,4.6vw,40px);line-height:1.5;letter-spacing:.05em;
-  color:#fff;margin-top:24px;word-break:keep-all;overflow-wrap:break-word;
-  text-shadow:0 2px 16px rgba(0,0,0,.62),0 0 44px rgba(0,0,0,.4);
-  opacity:0;animation:rise 1.2s ease .55s forwards;
+  font-size:clamp(22px,4.6vw,40px);line-height:1.55;letter-spacing:.06em;
+  color:#fff;margin-top:0;word-break:keep-all;overflow-wrap:break-word;
+  text-shadow:0 0 46px rgba(240,120,116,.14);
+  opacity:0;animation:floatIn 1.9s cubic-bezier(.2,.65,.25,1) .6s both;
 }
 .hero-copy em{font-style:normal;color:var(--gold-2);white-space:nowrap}
 .hero-sub{
   font-family:var(--mincho);font-weight:500;font-size:clamp(13px,2vw,16px);
-  letter-spacing:0.16em;color:rgba(239,231,214,0.82);margin-top:16px;
+  letter-spacing:0.18em;color:rgba(239,231,214,0.82);margin-top:20px;
   word-break:keep-all;overflow-wrap:break-word;
-  opacity:0;animation:rise 1.2s ease .7s forwards;
+  opacity:0;animation:floatIn 1.9s cubic-bezier(.2,.65,.25,1) 1s both;
 }
-.hero-line{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);margin:30px auto 0;opacity:0;animation:rise 1.2s ease .65s forwards}
-.hero-cta{margin-top:34px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:rise 1.2s ease .8s forwards}
+.hero-line{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);margin:32px auto 0;opacity:0;animation:floatIn 1.6s cubic-bezier(.2,.65,.25,1) 1.35s both}
+.hero-cta{margin-top:34px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:floatIn 1.6s cubic-bezier(.2,.65,.25,1) 1.55s both}
 .btn-ghost{
   font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
   color:var(--cream);border:1px solid rgba(239,231,214,0.4);
@@ -316,6 +296,7 @@ nav.main a:hover::after{width:100%}
 .scroll-hint .dot{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:drop 1.8s ease-in-out infinite}
 @keyframes drop{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(8px);opacity:1}}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floatIn{0%{opacity:0;transform:translateY(30px);filter:blur(9px)}55%{filter:blur(0)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
 
 /* ---- about ---- */
 .about-grid{display:grid;grid-template-columns:0.82fr 1fr;gap:72px;align-items:center}
@@ -563,6 +544,9 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   .hero-dots{bottom:98px}
 }
 @media(max-width:560px){
+  .hero{height:auto;min-height:auto;padding:116px 0 78px}
+  .hero-frame{inset:16px}
+  .hero-copy{font-size:clamp(22px,6.2vw,32px)}
   header{padding:0 20px;height:60px}
   header.scrolled{height:56px}
   .brand-logo{height:34px}
@@ -1048,19 +1032,9 @@ body::after{animation:grain .55s steps(3) infinite}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-slider" id="heroSlider">
-    <!-- 店内写真のみ -->
-    <div class="hero-slide active" style="background-image:url('assets/img/img11.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/img04.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/img15.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/img14.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/img12.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/img13.jpg')"></div>
-  </div>
   <div class="hero-frame"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Whisky · Wine · Kitchen</div>
-    <h1 class="hero-title">Cantina<br><em>Akasaka</em></h1>
     <p class="hero-copy">うまい飯と、いい酒と、<em>生の音楽</em>。</p>
     <div class="hero-sub">赤坂に根ざして半世紀 ── ひとりでも、心ゆくまで</div>
     <div class="hero-line"></div>
@@ -1069,7 +1043,6 @@ body::after{animation:grain .55s steps(3) infinite}
       <a href="#about" class="btn-ghost"><i class="fas fa-arrow-down"></i> 詳しく見る</a>
     </div>
   </div>
-  <div class="hero-dots" id="heroDots"></div>
   <div class="scroll-hint"><span>Scroll</span><span class="dot"></span></div>
 </section>
 
