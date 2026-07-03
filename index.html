@@ -639,6 +639,8 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 }
 @media(max-width:560px){
   .hero{height:auto;min-height:auto;padding:120px 0 84px}
+  /* スマホは背景を横3分割(上=料理動画 / 中=お酒スライダー / 下=ライブ動画) */
+  .hero-bg{grid-template-columns:1fr;grid-template-rows:1fr 1fr 1fr}
   .hero-frame{inset:16px}
   .hero-content{padding:0 20px}
   .sp-br{display:inline}
@@ -1227,29 +1229,6 @@ body::after{animation:grain .55s steps(3) infinite}
   </div>
 </section>
 
-<!-- MESSAGE (店主挨拶) -->
-<section id="message" class="section message-sec">
-  <div class="container">
-    <div class="message-grid">
-      <div class="message-figure reveal">
-        <img src="assets/img/master.jpg" alt="カンティーナ赤坂 店主" loading="lazy" style="object-position:center 22%">
-        <span class="message-since">Since 1975</span>
-      </div>
-      <div class="message-body reveal">
-        <span class="eyebrow">Message</span>
-        <h2 class="sec-title">店主より、<span class="accent">ご挨拶</span></h2>
-        <div class="rule"></div>
-        <p class="message-lead">1975年の創業以来、私たちがずっと変わらずに守り続けてきたもの。</p>
-        <p>それは、美味しいお酒と食事、そして何よりも「ここにいる誰もが笑顔になれる、我が家のような空気感」です。</p>
-        <p>カンティーナ赤坂は、ただお酒を飲むだけの場所ではありません。時にはジャズやアコースティックの生演奏に耳を傾け、時には隣り合ったお客様同士で会話が弾む、人と人とが自然に繋がれるアットホームな空間です。</p>
-        <p>老舗だからといって、敷居は一切高くありません。お腹を空かせてディナーを楽しまれる方も、音楽を愛する方も、一杯のウイスキーで一日の疲れを癒やしたい方も、みんなが同じように寛げるのが当店の自慢です。</p>
-        <p>赤坂の喧騒を少しだけ忘れて、温かい食事とグッドミュージックに身を委ねてみませんか？ 初めての方も、どうぞお気軽に扉を開けてみてください。いつでも温かくお迎えいたします。</p>
-        <div class="message-sign">カンティーナ赤坂　店主</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ABOUT -->
 <section id="about" class="section">
   <div class="container">
@@ -1272,6 +1251,29 @@ body::after{animation:grain .55s steps(3) infinite}
           <span class="badge">個室・貸切</span>
           <span class="badge">Uber Eats対応</span>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGE (店主挨拶) -->
+<section id="message" class="section message-sec">
+  <div class="container">
+    <div class="message-grid">
+      <div class="message-figure reveal">
+        <img src="assets/img/master.jpg" alt="カンティーナ赤坂 店主" loading="lazy" style="object-position:center 22%">
+        <span class="message-since">Since 1975</span>
+      </div>
+      <div class="message-body reveal">
+        <span class="eyebrow">Message</span>
+        <h2 class="sec-title">店主より、<span class="accent">ご挨拶</span></h2>
+        <div class="rule"></div>
+        <p class="message-lead">1975年の創業以来、私たちがずっと変わらずに守り続けてきたもの。</p>
+        <p>それは、美味しいお酒と食事、そして何よりも「ここにいる誰もが笑顔になれる、我が家のような空気感」です。</p>
+        <p>カンティーナ赤坂は、ただお酒を飲むだけの場所ではありません。時にはジャズやアコースティックの生演奏に耳を傾け、時には隣り合ったお客様同士で会話が弾む、人と人とが自然に繋がれるアットホームな空間です。</p>
+        <p>老舗だからといって、敷居は一切高くありません。お腹を空かせてディナーを楽しまれる方も、音楽を愛する方も、一杯のウイスキーで一日の疲れを癒やしたい方も、みんなが同じように寛げるのが当店の自慢です。</p>
+        <p>赤坂の喧騒を少しだけ忘れて、温かい食事とグッドミュージックに身を委ねてみませんか？ 初めての方も、どうぞお気軽に扉を開けてみてください。いつでも温かくお迎えいたします。</p>
+        <div class="message-sign">カンティーナ赤坂　店主</div>
       </div>
     </div>
   </div>
