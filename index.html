@@ -119,8 +119,41 @@ header.scrolled{
   height:66px;
 }
 .brand{line-height:1;text-decoration:none;display:flex;align-items:center}
-.brand-logo{height:40px;width:auto;transition:height .5s ease}
+/* ロゴをネオン管化: 単色PNGをマスクにして赤く発光＋点灯フリッカー(営業中の演出) */
+.brand-logo{
+  display:block;flex:0 0 auto;height:40px;width:auto;aspect-ratio:17/7;
+  background-color:#ff3b30;
+  -webkit-mask:url('assets/img/img02.png') no-repeat center/contain;
+          mask:url('assets/img/img02.png') no-repeat center/contain;
+  filter:drop-shadow(0 0 5px rgba(255,74,64,.92)) drop-shadow(0 0 13px rgba(255,48,42,.6)) drop-shadow(0 0 27px rgba(255,32,28,.34));
+  transition:height .5s ease;
+  animation:neonBoot 2.4s cubic-bezier(.2,.7,.2,1) both, neonIdle 8s linear 2.6s infinite;
+}
 header.scrolled .brand-logo{height:34px}
+/* 点灯: 暗→チカチカ→安定した赤ネオン */
+@keyframes neonBoot{
+  0%{opacity:0;background-color:#4a1210;filter:none}
+  3%{opacity:1;filter:drop-shadow(0 0 6px #ff3b30)}
+  5%{opacity:.12;filter:none}
+  8%{opacity:1;filter:drop-shadow(0 0 7px #ff3b30)}
+  10%{opacity:.28;filter:none}
+  12%{opacity:1}
+  15%{opacity:.08;background-color:#4a1210;filter:none}
+  21%{opacity:1;background-color:#ff3b30;filter:drop-shadow(0 0 8px #ff3b30) drop-shadow(0 0 18px rgba(255,48,42,.62))}
+  23%{opacity:.42}
+  26%{opacity:1}
+  30%{opacity:.72}
+  33%{opacity:1;filter:drop-shadow(0 0 7px #ff3b30) drop-shadow(0 0 15px rgba(255,48,42,.52))}
+  100%{opacity:1;filter:drop-shadow(0 0 5px rgba(255,74,64,.92)) drop-shadow(0 0 13px rgba(255,48,42,.6)) drop-shadow(0 0 27px rgba(255,32,28,.34))}
+}
+/* 常時のさりげない明滅(生きたネオン感) */
+@keyframes neonIdle{
+  0%,92%,100%{opacity:1}
+  94%{opacity:.86}
+  95%{opacity:1}
+  96%{opacity:.9}
+  97%{opacity:1}
+}
 .footer-logo-img{height:52px;width:auto;margin-bottom:6px}
 .brand .en{
   font-family:var(--serif);font-size:26px;font-weight:500;
@@ -1008,7 +1041,7 @@ body::after{animation:grain .55s steps(3) infinite}
 <div id="prog" aria-hidden="true"></div>
 
 <header id="hdr">
-  <a href="#" class="brand" aria-label="カンティーナ赤坂"><img src="assets/img/img02.png" alt="Cantina Akasaka" class="brand-logo"></a>
+  <a href="#" class="brand" aria-label="カンティーナ赤坂"><span class="brand-logo" aria-hidden="true"></span></a>
   <nav class="main">
     <a href="#about">当店について</a>
     <a href="#gallery">店内</a>
