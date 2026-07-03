@@ -638,14 +638,21 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
   .hero-dots{bottom:98px}
 }
 @media(max-width:560px){
-  .hero{height:auto;min-height:auto;padding:120px 0 84px}
-  /* スマホは背景を横3分割(上=料理動画 / 中=お酒スライダー / 下=ライブ動画) */
-  .hero-bg{grid-template-columns:1fr;grid-template-rows:1fr 1fr 1fr}
+  .hero{height:auto;min-height:82vh;padding:104px 0 76px}
+  /* スマホ背景を横3分割(上=料理動画 / 中=お酒スライダー / 下=ライブ動画)。
+     真ん中の段はスライダーを外して真っ白に、文字は黒＋赤アクセントで強調 */
+  .hero-bg{grid-template-columns:1fr;grid-template-rows:20% 60% 20%}
+  .hero-panel:nth-child(2){background:#fff}
+  .hero-panel:nth-child(2) .hero-slides{display:none}
+  .hero::before{display:none}
   .hero-frame{inset:16px}
   .hero-content{padding:0 20px}
   .sp-br{display:inline}
-  .hero-copy{font-size:clamp(22px,7vw,36px);line-height:1.55}
-  .hero-sub{font-size:clamp(13.5px,3.5vw,16px);line-height:1.9}
+  .hero-eyebrow{color:#cf3a37}
+  .hero-copy{font-size:clamp(22px,7vw,36px);line-height:1.55;color:#141010}
+  .hero-copy em{color:#cf3a37}
+  .hero-sub{font-size:clamp(13.5px,3.5vw,16px);line-height:1.9;color:#241d1a}
+  .hero-line{background:linear-gradient(#cf3a37,transparent)}
   header{padding:0 20px;height:60px}
   header.scrolled{height:56px}
   .brand-logo{height:34px}
