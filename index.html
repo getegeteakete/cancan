@@ -829,6 +829,33 @@ body::after{animation:grain .55s steps(3) infinite}
   .dish-film .film-label{left:14px;bottom:12px;font-size:10px;letter-spacing:.2em}
   .dish-film .film-sound{width:38px;height:38px;right:12px;bottom:12px}
 }
+
+/* メニュー タブ切替 */
+.menu-tabs{display:flex;width:max-content;max-width:100%;margin:36px auto 34px;border:1px solid var(--line);position:relative;z-index:1}
+.menu-tab{
+  font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--muted);
+  background:transparent;border:0;padding:14px 34px;cursor:pointer;position:relative;
+  transition:color .35s ease,background .35s ease;text-align:center;line-height:1.2;
+}
+.menu-tab + .menu-tab{border-left:1px solid var(--line)}
+.menu-tab span{display:block;font-family:var(--sans);font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;margin-top:4px;opacity:.6}
+.menu-tab:hover{color:var(--cream)}
+.menu-tab.active{color:#f5efe3;background:linear-gradient(180deg,var(--gold),var(--ember))}
+.menu-tab.active span{opacity:.85}
+.menu-panel{display:none;animation:panelIn .5s cubic-bezier(.2,.7,.2,1)}
+.menu-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* コース写真 */
+.course-photo{position:relative;overflow:hidden;border:1px solid var(--line);margin-bottom:34px;box-shadow:var(--shadow-card,0 20px 50px rgba(0,0,0,.3))}
+.course-photo img{width:100%;height:clamp(220px,40vw,440px);object-fit:cover;display:block}
+.course-photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 55%,rgba(12,9,6,.5))}
+.course-photo-cap{position:absolute;left:18px;bottom:14px;z-index:2;font-family:var(--sans);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:10px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.course-photo-cap::before{content:"";width:24px;height:1px;background:var(--gold)}
+.menu-panel .course-band{margin-top:0}
+@media(max-width:560px){
+  .menu-tab{padding:12px 22px;font-size:12px}
+  .menu-tabs{margin:28px auto 26px}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -1060,32 +1087,11 @@ body::after{animation:grain .55s steps(3) infinite}
       <h2 class="sec-title">お品書き</h2>
       <div><span class="charge"><i class="fas fa-circle-info"></i> テーブルチャージ ¥550（税込）</span></div>
     </div>
-    <div class="course-band reveal">
-      <div class="course-head">
-        <span class="eyebrow center">Course &amp; Party</span>
-        <h3>飲み放題付き 宴会・女子会コース</h3>
-        <p>2階は貸切個室（4〜25名）でカラオケ完備。会社宴会・二次会・結婚式二次会・同窓会・女子会に。</p>
-      </div>
-      <div class="course-list">
-        <div class="course-item">
-          <div class="course-name">二次会宴会コース<span class="course-meta">90分飲み放題付・全3品</span></div>
-          <div class="course-price">¥3,000<small>税込</small></div>
-        </div>
-        <div class="course-item">
-          <div class="course-name">カンティーナ赤坂コース<span class="course-meta">120分飲み放題付・各種宴会に</span></div>
-          <div class="course-price">お問合せ</div>
-        </div>
-        <div class="course-item">
-          <div class="course-name">女子会プラン<span class="course-meta">120分飲み放題付・女性限定</span></div>
-          <div class="course-price">¥4,000<small>税込</small></div>
-        </div>
-        <div class="course-item">
-          <div class="course-name">女子会プラン（お料理のみ）<span class="course-meta">女性限定</span></div>
-          <div class="course-price">¥3,000<small>税込</small></div>
-        </div>
-      </div>
-      <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="course-cta"><i class="fas fa-calendar-check"></i> 宴会・貸切のご予約・ご相談</a>
+    <div class="menu-tabs reveal" role="tablist" aria-label="メニュー切替">
+      <button class="menu-tab active" type="button" role="tab" aria-selected="true" data-tab="regular">通常メニュー<span>Menu</span></button>
+      <button class="menu-tab" type="button" role="tab" aria-selected="false" data-tab="course">コース<span>Course</span></button>
     </div>
+    <div class="menu-panel active" id="tab-regular" role="tabpanel">
     <div class="food-showcase reveal">
       <img src="assets/img/img16.jpg" alt="名物ビーフカレー" loading="lazy">
       <img src="assets/img/img05.jpg" alt="あさりのボンゴレ" loading="lazy">
@@ -1150,6 +1156,39 @@ body::after{animation:grain .55s steps(3) infinite}
       </div>
     </div>
     <p class="menu-note">※価格は税込・変動あり。詳細は店頭にてご確認ください。</p>
+    </div><!-- /tab-regular -->
+    <div class="menu-panel" id="tab-course" role="tabpanel">
+      <div class="course-photo reveal">
+        <img src="assets/img/course.jpg" alt="宴会・女子会コースのお料理(ステーキ・パスタ・ガーリックライス・サラダ ほか)" loading="lazy">
+        <span class="course-photo-cap">Course Dishes</span>
+      </div>
+    <div class="course-band">
+      <div class="course-head">
+        <span class="eyebrow center">Course &amp; Party</span>
+        <h3>飲み放題付き 宴会・女子会コース</h3>
+        <p>2階は貸切個室（4〜25名）でカラオケ完備。会社宴会・二次会・結婚式二次会・同窓会・女子会に。</p>
+      </div>
+      <div class="course-list">
+        <div class="course-item">
+          <div class="course-name">二次会宴会コース<span class="course-meta">90分飲み放題付・全3品</span></div>
+          <div class="course-price">¥3,000<small>税込</small></div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">カンティーナ赤坂コース<span class="course-meta">120分飲み放題付・各種宴会に</span></div>
+          <div class="course-price">お問合せ</div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">女子会プラン<span class="course-meta">120分飲み放題付・女性限定</span></div>
+          <div class="course-price">¥4,000<small>税込</small></div>
+        </div>
+        <div class="course-item">
+          <div class="course-name">女子会プラン（お料理のみ）<span class="course-meta">女性限定</span></div>
+          <div class="course-price">¥3,000<small>税込</small></div>
+        </div>
+      </div>
+      <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="course-cta"><i class="fas fa-calendar-check"></i> 宴会・貸切のご予約・ご相談</a>
+    </div>
+    </div><!-- /tab-course -->
   </div>
 </section>
 
@@ -1680,6 +1719,26 @@ body::after{animation:grain .55s steps(3) infinite}
             sbtn.innerHTML = film.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>';
           });
         }
+      }
+    }catch(e){}
+
+    /* メニュー タブ切替（通常メニュー / コース） */
+    try{
+      var tabs=[].slice.call(document.querySelectorAll('.menu-tab'));
+      if(tabs.length){
+        tabs.forEach(function(tab){
+          tab.addEventListener('click',function(){
+            var key=tab.getAttribute('data-tab');
+            tabs.forEach(function(t){
+              var on=t===tab;
+              t.classList.toggle('active',on);
+              t.setAttribute('aria-selected',on?'true':'false');
+            });
+            [].forEach.call(document.querySelectorAll('.menu-panel'),function(pnl){
+              pnl.classList.toggle('active', pnl.id==='tab-'+key);
+            });
+          });
+        });
       }
     }catch(e){}
   })();
