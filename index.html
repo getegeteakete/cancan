@@ -383,6 +383,28 @@ nav.main a:hover::after{width:100%}
 .food-showcase img{width:100%;height:200px;object-fit:cover;border:1px solid var(--line-soft);filter:saturate(1.02) brightness(0.97);transition:transform .5s,filter .5s}
 .food-showcase img:hover{transform:scale(1.03);filter:saturate(1.1) brightness(1.05)}
 @media(max-width:760px){.food-showcase{grid-template-columns:repeat(2,1fr)}.food-showcase img{height:150px}.food-showcase img:last-child{grid-column:span 2;height:180px}}
+/* お酒のスライダー(Drinksショーケース) */
+.drink-slider{margin-top:56px;position:relative}
+.drink-slider .ds-head{display:flex;align-items:baseline;gap:12px;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.drink-slider .ds-head h3{font-family:var(--serif);font-weight:500;font-size:27px;color:var(--cream);margin:0}
+.drink-slider .ds-head .en{font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-left:auto;font-weight:500}
+.ds-viewport{position:relative;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/7;background:#0a0705;box-shadow:var(--shadow-card,0 24px 60px rgba(0,0,0,.4))}
+.ds-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease}
+.ds-slide.active{opacity:1}
+.ds-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.ds-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 42%,rgba(12,9,6,.6))}
+.ds-slide figcaption{position:absolute;left:22px;bottom:20px;z-index:2;display:flex;flex-direction:column;gap:5px;text-shadow:0 2px 12px rgba(0,0,0,.75)}
+.ds-slide .ds-en{font-family:var(--mincho);font-style:italic;font-size:clamp(22px,3vw,32px);color:#fff;letter-spacing:.04em;line-height:1}
+.ds-slide .ds-ja{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2)}
+.ds-dots{position:absolute;right:18px;bottom:22px;z-index:3;display:flex;gap:9px}
+.ds-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:background .3s,transform .3s}
+.ds-dot.active{background:var(--gold);transform:scale(1.15)}
+@media(max-width:560px){
+  .drink-slider{margin-top:40px}
+  .ds-viewport{aspect-ratio:4/3}
+  .ds-slide figcaption{left:16px;bottom:16px}
+  .ds-dots{right:14px;bottom:16px}
+}
 .menu-cat h3{
   font-family:var(--serif);font-weight:500;font-size:27px;color:var(--cream);
   display:flex;align-items:baseline;gap:12px;padding-bottom:14px;margin-bottom:18px;
@@ -1314,6 +1336,16 @@ body::after{animation:grain .55s steps(3) infinite}
         <div class="mitem"><span class="name">ソフトドリンク各種</span><span class="dots"></span><span class="price">¥500</span></div>
       </div>
     </div>
+    <div class="drink-slider reveal" aria-label="お酒のラインナップ">
+      <div class="ds-head"><h3>お酒</h3><span class="en">Bar Selection</span></div>
+      <div class="ds-viewport">
+        <figure class="ds-slide active"><img src="assets/img/drink-whisky.jpg" alt="ロックで愉しむウイスキー" loading="lazy"><figcaption><span class="ds-en">Whisky</span><span class="ds-ja">国産・スコッチ豊富</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-wine.jpg" alt="グラスで愉しむ赤ワイン" loading="lazy"><figcaption><span class="ds-en">Wine</span><span class="ds-ja">ワイン各種</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-cocktail.jpg" alt="バーカウンターのカクテル" loading="lazy"><figcaption><span class="ds-en">Cocktail</span><span class="ds-ja">カクテル各種</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-highball.jpg" alt="よく冷えたハイボール" loading="lazy"><figcaption><span class="ds-en">Highball</span><span class="ds-ja">ハイボール・炭酸</span></figcaption></figure>
+        <div class="ds-dots" id="dsDots"></div>
+      </div>
+    </div>
     <p class="menu-note">※価格は税込・変動あり。詳細は店頭にてご確認ください。</p>
     </div><!-- /tab-regular -->
     <div class="menu-panel" id="tab-course" role="tabpanel">
@@ -1582,6 +1614,29 @@ body::after{animation:grain .55s steps(3) infinite}
       }
       requestAnimationFrame(step);
     });
+  })();
+
+  /* ===== DRINK SLIDER (お酒のショーケース) ===== */
+  (function(){
+    var root=document.querySelector('.drink-slider'); if(!root) return;
+    var slides=root.querySelectorAll('.ds-slide'); if(slides.length<2) return;
+    var wrap=root.querySelector('#dsDots'), i=0, dots=[];
+    slides.forEach(function(_,k){
+      var b=document.createElement('button');
+      b.className='ds-dot'+(k===0?' active':'');
+      b.setAttribute('aria-label','ドリンク'+(k+1));
+      b.addEventListener('click',function(){ go(k); reset(); });
+      wrap.appendChild(b); dots.push(b);
+    });
+    function go(n){ slides[i].classList.remove('active'); dots[i].classList.remove('active'); i=n; slides[i].classList.add('active'); dots[i].classList.add('active'); }
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var timer=null;
+    function tick(){ go((i+1)%slides.length); }
+    function start(){ if(!reduce && !timer){ timer=setInterval(tick,4200); } }
+    function reset(){ if(timer){ clearInterval(timer); timer=null; } start(); }
+    root.addEventListener('mouseenter',function(){ if(timer){ clearInterval(timer); timer=null; } });
+    root.addEventListener('mouseleave',start);
+    start();
   })();
 
   /* ===== AI CONCIERGE ===== */
