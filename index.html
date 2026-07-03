@@ -273,9 +273,25 @@ nav.main a:hover::after{width:100%}
 
 /* ---- hero ---- */
 .hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
+/* 背景: 縦3分割(左=料理動画 / 中央=お酒写真ズーム / 右=ライブ動画) */
+.hero-bg{position:absolute;inset:0;z-index:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(207,58,55,.3)}
+.hero-panel{
+  position:relative;overflow:hidden;background:#000;
+  clip-path:inset(0 0 0 0);
+  animation:curtainDrop 1.15s cubic-bezier(.66,0,.28,1) both;
+}
+.hero-panel:nth-child(1){animation-delay:.15s}
+.hero-panel:nth-child(2){animation-delay:.5s}
+.hero-panel:nth-child(3){animation-delay:.85s}
+.hero-panel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-photo{position:absolute;inset:0;background-size:cover;background-position:center;transform-origin:center;animation:heroPhotoZoom 15s ease-in-out infinite alternate}
+@keyframes curtainDrop{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes heroPhotoZoom{from{transform:scale(1.02)}to{transform:scale(1.2)}}
 .hero::before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(120% 78% at 50% 34%, rgba(207,58,55,0.05) 0%, rgba(0,0,0,0) 56%);
+  background:
+    linear-gradient(to bottom, rgba(8,6,4,.62) 0%, rgba(8,6,4,.4) 42%, rgba(8,6,4,.74) 100%),
+    radial-gradient(120% 78% at 50% 34%, rgba(207,58,55,0.08) 0%, rgba(0,0,0,0) 56%);
 }
 .hero-frame{
   position:absolute;inset:26px;z-index:3;border:1px solid rgba(207,58,55,0.28);pointer-events:none;
@@ -1111,6 +1127,17 @@ body::after{animation:grain .55s steps(3) infinite}
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-panel">
+      <video id="heroVidL" src="assets/video/dish.mp4" muted loop playsinline autoplay preload="metadata" tabindex="-1"></video>
+    </div>
+    <div class="hero-panel">
+      <div class="hero-photo" style="background-image:url('assets/img/drink-whisky.jpg')"></div>
+    </div>
+    <div class="hero-panel">
+      <video id="heroVidR" src="assets/video/music.mp4" muted loop playsinline autoplay preload="metadata" tabindex="-1"></video>
+    </div>
+  </div>
   <div class="hero-frame"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Whisky · Wine · Kitchen</div>
@@ -1939,6 +1966,18 @@ body::after{animation:grain .55s steps(3) infinite}
           });
         }
       }
+    }catch(e){}
+
+    /* ヒーロー背景の動画(左=料理/右=ライブ): 画面内で再生・画面外で停止（無音） */
+    try{
+      ['heroVidL','heroVidR'].forEach(function(id){
+        var v=document.getElementById(id); if(!v) return;
+        v.muted=true;
+        var o=new IntersectionObserver(function(es){
+          es.forEach(function(x){ if(x.isIntersecting){ v.play().catch(function(){}); } else { v.pause(); } });
+        },{threshold:0.05});
+        o.observe(v);
+      });
     }catch(e){}
 
     /* ライブミュージックのムービー: 画面内で再生・画面外で停止（常に無音） */
