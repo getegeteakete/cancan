@@ -519,6 +519,27 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 .marquee-track img:hover{filter:saturate(1.1) brightness(1.05)}
 @media(max-width:560px){.marquee-track img{height:170px}.marquee-section{padding:16px 0}}
 
+/* ---- 店内の雰囲気スクロール(店主挨拶の上) ---- */
+.interior-marquee{background:var(--ink);padding:40px 0 34px}
+.interior-marquee .marquee-track img{height:250px;filter:saturate(1.0) brightness(0.9)}
+.interior-marquee .marquee-track img:hover{filter:saturate(1.06) brightness(1.02)}
+.marquee-head{max-width:1160px;margin:0 auto 24px;padding:0 32px;text-align:center}
+.marquee-head .mq-eyebrow{
+  display:inline-flex;align-items:center;gap:11px;
+  font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);
+}
+.marquee-head .mq-eyebrow::before,.marquee-head .mq-eyebrow::after{content:"";width:26px;height:1px;background:var(--gold);opacity:.7}
+.marquee-head .mq-title{
+  display:block;font-family:var(--mincho);font-weight:500;
+  font-size:clamp(18px,2.6vw,24px);letter-spacing:.08em;color:var(--cream);margin-top:13px;
+}
+@media(max-width:560px){
+  .interior-marquee{padding:26px 0 22px}
+  .interior-marquee .marquee-track img{height:190px}
+  .marquee-head{margin-bottom:16px;padding:0 20px}
+  .marquee-head .mq-title{font-size:clamp(16px,4.6vw,20px)}
+}
+
 /* ---- reveal ---- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
 .reveal.vis{opacity:1;transform:translateY(0)}
@@ -1091,6 +1112,32 @@ body::after{animation:grain .55s steps(3) infinite}
   </div>
 </section>
 
+<!-- INTERIOR GALLERY (店主挨拶の上・店内の雰囲気スクロール) -->
+<section class="marquee-section interior-marquee reveal" aria-label="店内の雰囲気">
+  <div class="marquee-head">
+    <span class="mq-eyebrow">Our Space</span>
+    <span class="mq-title">赤坂の片隅、半世紀の空気感</span>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track" data-dir="right" data-speed="0.42">
+      <img loading="lazy" src="assets/img/img10.jpg" alt="カンティーナ赤坂の外観">
+      <img loading="lazy" src="assets/img/img11.jpg" alt="酒瓶が並ぶカウンターと店内">
+      <img loading="lazy" src="assets/img/img04.jpg" alt="カウンターに立つ店主">
+      <img loading="lazy" src="assets/img/img14.jpg" alt="使い込まれた一枚板のカウンター">
+      <img loading="lazy" src="assets/img/img15.jpg" alt="ウイスキーが並ぶ棚">
+      <img loading="lazy" src="assets/img/img13.jpg" alt="奥のテーブル席とギター">
+      <img loading="lazy" src="assets/img/img12.jpg" alt="レコードとCDが並ぶ棚">
+      <img loading="lazy" src="assets/img/img10.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img11.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img04.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img14.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img15.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img13.jpg" alt="" aria-hidden="true">
+      <img loading="lazy" src="assets/img/img12.jpg" alt="" aria-hidden="true">
+    </div>
+  </div>
+</section>
+
 <!-- MESSAGE (店主挨拶) -->
 <section id="message" class="section message-sec">
   <div class="container">
@@ -1474,29 +1521,34 @@ body::after{animation:grain .55s steps(3) infinite}
     if(!reduce){timer=setInterval(tick,6000);}
   })();
 
-  /* ===== FOOD MARQUEE (JS駆動: 低電力/視差軽減でも動く) ===== */
+  /* ===== MARQUEES (複数対応・方向/速度をdata属性で指定・低電力でも動く) ===== */
   (function(){
-    var track=document.querySelector('.marquee-track'); if(!track) return;
-    var x=0, half=0, speed=0.55; // px/frame（速さ調整可）
-    function measure(){ half=track.scrollWidth/2; }
-    measure();
-    window.addEventListener('load',measure);
-    window.addEventListener('resize',measure);
-    Array.prototype.forEach.call(track.querySelectorAll('img'),function(im){
-      if(!im.complete){ im.addEventListener('load',measure); }
-    });
-    var paused=false;
-    track.addEventListener('mouseenter',function(){paused=true;});
-    track.addEventListener('mouseleave',function(){paused=false;});
-    function step(){
-      if(!paused && half){
-        x-=speed;
-        if(-x>=half) x+=half;
-        track.style.transform='translateX('+x+'px)';
+    var tracks=document.querySelectorAll('.marquee-track'); if(!tracks.length) return;
+    Array.prototype.forEach.call(tracks,function(track){
+      var dir = track.getAttribute('data-dir')==='right' ? 1 : -1;
+      var speed = parseFloat(track.getAttribute('data-speed'))||0.55; // px/frame
+      var x=0, half=0, inited=false;
+      function measure(){ half=track.scrollWidth/2; if(!inited && half){ x = dir>0 ? -half : 0; inited=true; } }
+      measure();
+      window.addEventListener('load',measure);
+      window.addEventListener('resize',measure);
+      Array.prototype.forEach.call(track.querySelectorAll('img'),function(im){
+        if(!im.complete){ im.addEventListener('load',measure); }
+      });
+      var paused=false;
+      track.addEventListener('mouseenter',function(){paused=true;});
+      track.addEventListener('mouseleave',function(){paused=false;});
+      function step(){
+        if(!paused && half){
+          x += dir*speed;
+          if(x<=-half) x+=half;
+          if(x>0) x-=half;
+          track.style.transform='translateX('+x+'px)';
+        }
+        requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    });
   })();
 
   /* ===== AI CONCIERGE ===== */
