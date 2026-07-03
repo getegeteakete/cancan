@@ -260,14 +260,15 @@ nav.main a:hover::after{width:100%}
 .hero-copy{
   font-family:var(--mincho);font-weight:700;
   font-size:clamp(28px,5.6vw,56px);line-height:1.5;letter-spacing:.06em;
-  color:#fff;margin-top:0;word-break:keep-all;overflow-wrap:break-word;
+  color:#fff;margin-top:0;word-break:normal;overflow-wrap:break-word;
   opacity:0;animation:floatIn 2s cubic-bezier(.2,.65,.25,1) .6s both;
 }
 .hero-copy em{font-style:normal;color:var(--gold-2);white-space:nowrap}
+.sp-br{display:none}
 .hero-sub{
   font-family:var(--mincho);font-weight:500;font-size:clamp(15px,2.3vw,19px);
   letter-spacing:0.18em;color:rgba(239,231,214,0.94);margin-top:24px;
-  word-break:keep-all;overflow-wrap:break-word;
+  word-break:normal;overflow-wrap:break-word;
   opacity:0;animation:floatIn 2s cubic-bezier(.2,.65,.25,1) 1.05s both;
 }
 .hero-line{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);margin:32px auto 0;opacity:0;animation:floatIn 1.6s cubic-bezier(.2,.65,.25,1) 1.35s both}
@@ -545,8 +546,10 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 @media(max-width:560px){
   .hero{height:auto;min-height:auto;padding:120px 0 84px}
   .hero-frame{inset:16px}
-  .hero-copy{font-size:clamp(27px,7.6vw,40px)}
-  .hero-sub{font-size:clamp(14px,3.6vw,17px)}
+  .hero-content{padding:0 20px}
+  .sp-br{display:inline}
+  .hero-copy{font-size:clamp(22px,7vw,36px);line-height:1.55}
+  .hero-sub{font-size:clamp(13.5px,3.5vw,16px);line-height:1.9}
   header{padding:0 20px;height:60px}
   header.scrolled{height:56px}
   .brand-logo{height:34px}
@@ -1035,8 +1038,8 @@ body::after{animation:grain .55s steps(3) infinite}
   <div class="hero-frame"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Whisky · Wine · Kitchen</div>
-    <p class="hero-copy">うまい飯と、いい酒と、<em>生の音楽</em>。</p>
-    <div class="hero-sub">赤坂に根ざして半世紀 ── ひとりでも、心ゆくまで</div>
+    <p class="hero-copy">うまい飯と、いい酒と、<br class="sp-br"><em>生の音楽</em>。</p>
+    <div class="hero-sub">赤坂に根ざして半世紀 ── <br class="sp-br">ひとりでも、心ゆくまで</div>
     <div class="hero-line"></div>
   </div>
   <div class="scroll-hint"><span>Scroll</span><span class="dot"></span></div>
