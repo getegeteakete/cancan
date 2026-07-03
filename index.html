@@ -840,10 +840,11 @@ body::after{animation:grain .55s steps(3) infinite}
 }
 
 /* メニュー タブ切替 */
-.menu-tabs{display:flex;width:max-content;max-width:100%;margin:36px auto 34px;border:1px solid var(--line);position:relative;z-index:1}
+.menu-tabs{display:flex;width:100%;margin:36px auto 34px;border:1px solid var(--line);position:relative;z-index:1}
 .menu-tab{
-  font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--muted);
-  background:transparent;border:0;padding:14px 34px;cursor:pointer;position:relative;
+  flex:1;
+  font-family:var(--sans);font-size:14px;letter-spacing:.12em;color:var(--muted);
+  background:transparent;border:0;padding:17px 16px;cursor:pointer;position:relative;
   transition:color .35s ease,background .35s ease;text-align:center;line-height:1.2;
 }
 .menu-tab + .menu-tab{border-left:1px solid var(--line)}
@@ -1099,7 +1100,7 @@ body::after{animation:grain .55s steps(3) infinite}
     </div>
     <div class="menu-tabs reveal" role="tablist" aria-label="メニュー切替">
       <button class="menu-tab active" type="button" role="tab" aria-selected="true" data-tab="regular">通常メニュー<span>Menu</span></button>
-      <button class="menu-tab" type="button" role="tab" aria-selected="false" data-tab="course">コース<span>Course</span></button>
+      <button class="menu-tab" type="button" role="tab" aria-selected="false" data-tab="course">コースメニュー<span>Course</span></button>
     </div>
     <div class="menu-panel active" id="tab-regular" role="tabpanel">
     <div class="food-showcase reveal">
