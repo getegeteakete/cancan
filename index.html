@@ -839,6 +839,49 @@ body::after{animation:grain .55s steps(3) infinite}
   .dish-film .film-sound{width:38px;height:38px;right:12px;bottom:12px}
 }
 
+/* ライブミュージックのムービー（ご飯スクロールの下・無音・"Music"ウォーターマーク） */
+.music-film{position:relative;background:var(--ink);padding:12px 0 40px}
+.music-film .film-wrap{position:relative;max-width:1160px;margin:0 auto;padding:0 32px}
+.music-film .film-inner{
+  position:relative;overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--shadow-card, 0 24px 60px rgba(0,0,0,.4));
+  aspect-ratio:16/5;background:#0a0705;
+}
+.music-film video{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;filter:saturate(.9) contrast(1.03)}
+.music-film .film-inner::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(12,9,6,.5),transparent 28%,transparent 72%,rgba(12,9,6,.5)),linear-gradient(180deg,rgba(12,9,6,.3),transparent 44%,rgba(12,9,6,.56));
+}
+@media(max-width:560px){ .music-film .film-inner{aspect-ratio:16/6} }
+.music-film .film-corner::before,.music-film .film-corner::after{
+  content:"";position:absolute;width:16px;height:16px;border:1px solid var(--gold);z-index:3;pointer-events:none;
+}
+.music-film .film-corner::before{top:12px;left:12px;border-right:0;border-bottom:0}
+.music-film .film-corner::after{bottom:12px;right:12px;border-left:0;border-top:0}
+/* うっすら "Music" の文字を中央に重ねる */
+.music-film .film-watermark{
+  position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;pointer-events:none;
+}
+.music-film .film-watermark em{
+  font-family:var(--mincho);font-style:italic;font-weight:500;
+  font-size:clamp(48px,11vw,132px);line-height:1;letter-spacing:.05em;
+  color:rgba(239,231,214,.15);
+  text-shadow:0 2px 44px rgba(0,0,0,.45);
+  -webkit-user-select:none;user-select:none;
+}
+.music-film .film-label{
+  position:absolute;left:20px;bottom:16px;z-index:5;
+  font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#fff;
+  display:flex;align-items:center;gap:11px;text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+.music-film .film-label::before{content:"";width:26px;height:1px;background:var(--gold)}
+.music-film .film-label span{font-family:var(--mincho);font-style:normal;letter-spacing:.08em;font-size:13px;color:var(--cream)}
+@media(max-width:560px){
+  .music-film{padding:8px 0 26px}
+  .music-film .film-wrap{padding:0 16px}
+  .music-film .film-label{left:14px;bottom:12px;font-size:10px;letter-spacing:.2em}
+}
+
 /* メニュー タブ切替 */
 .menu-tabs{display:flex;width:100%;margin:36px auto 34px;border:1px solid var(--line);position:relative;z-index:1}
 .menu-tab{
@@ -1059,6 +1102,19 @@ body::after{animation:grain .55s steps(3) infinite}
       <img loading="lazy" src="assets/img/img06.jpg" alt="" aria-hidden="true">
       <img loading="lazy" src="assets/img/img05.jpg" alt="" aria-hidden="true">
       <img loading="lazy" src="assets/img/img08.jpg" alt="" aria-hidden="true">
+    </div>
+  </div>
+</section>
+
+<!-- MUSIC FILM (ご飯スクロールの下・ライブミュージックのムービー / 無音) -->
+<section class="music-film reveal" aria-label="ライブミュージックの動画">
+  <div class="film-wrap">
+    <div class="film-inner">
+      <video id="musicFilm" src="assets/video/music.mp4"
+             muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <span class="film-corner" aria-hidden="true"></span>
+      <span class="film-watermark" aria-hidden="true"><em>Music</em></span>
+      <span class="film-label"><span>生の音楽</span> Live at Cantina</span>
     </div>
   </div>
 </section>
@@ -1770,6 +1826,21 @@ body::after{animation:grain .55s steps(3) infinite}
             sbtn.innerHTML = film.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>';
           });
         }
+      }
+    }catch(e){}
+
+    /* ライブミュージックのムービー: 画面内で再生・画面外で停止（常に無音） */
+    try{
+      var mfilm=document.getElementById('musicFilm');
+      if(mfilm){
+        mfilm.muted=true;
+        var mObs=new IntersectionObserver(function(es){
+          es.forEach(function(x){
+            if(x.isIntersecting){ mfilm.play().catch(function(){}); }
+            else{ mfilm.pause(); }
+          });
+        },{threshold:0.4});
+        mObs.observe(mfilm);
       }
     }catch(e){}
 
