@@ -284,9 +284,11 @@ nav.main a:hover::after{width:100%}
 .hero-panel:nth-child(2){animation-delay:.5s}
 .hero-panel:nth-child(3){animation-delay:.85s}
 .hero-panel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero-photo{position:absolute;inset:0;background-size:cover;background-position:center;transform-origin:center;animation:heroPhotoZoom 15s ease-in-out infinite alternate}
+/* 中央: お酒のクロスフェード・スライダー */
+.hero-slides{position:absolute;inset:0}
+.hero-drink-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease}
+.hero-drink-slide.active{opacity:1}
 @keyframes curtainDrop{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
-@keyframes heroPhotoZoom{from{transform:scale(1.02)}to{transform:scale(1.2)}}
 .hero::before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
@@ -1132,7 +1134,12 @@ body::after{animation:grain .55s steps(3) infinite}
       <video id="heroVidL" src="assets/video/dish.mp4" muted loop playsinline autoplay preload="metadata" tabindex="-1"></video>
     </div>
     <div class="hero-panel">
-      <div class="hero-photo" style="background-image:url('assets/img/drink-whisky.jpg')"></div>
+      <div class="hero-slides">
+        <div class="hero-drink-slide active" style="background-image:url('assets/img/drink-whisky.jpg')"></div>
+        <div class="hero-drink-slide" style="background-image:url('assets/img/drink-wine.jpg')"></div>
+        <div class="hero-drink-slide" style="background-image:url('assets/img/drink-cocktail.jpg')"></div>
+        <div class="hero-drink-slide" style="background-image:url('assets/img/drink-highball.jpg')"></div>
+      </div>
     </div>
     <div class="hero-panel">
       <video id="heroVidR" src="assets/video/music.mp4" muted loop playsinline autoplay preload="metadata" tabindex="-1"></video>
@@ -1965,6 +1972,19 @@ body::after{animation:grain .55s steps(3) infinite}
             sbtn.innerHTML = film.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>';
           });
         }
+      }
+    }catch(e){}
+
+    /* ヒーロー中央: お酒スライダー(背景・自動クロスフェード) */
+    try{
+      var dslides=document.querySelectorAll('.hero-drink-slide');
+      if(dslides.length>1 && !RM){
+        var di=0;
+        setInterval(function(){
+          dslides[di].classList.remove('active');
+          di=(di+1)%dslides.length;
+          dslides[di].classList.add('active');
+        },3600);
       }
     }catch(e){}
 
