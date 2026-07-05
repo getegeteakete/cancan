@@ -592,8 +592,8 @@ footer{background:#080604;border-top:1px solid var(--line-soft);padding:76px 0 3
 .marquee-track img:hover{filter:saturate(1.1) brightness(1.05)}
 @media(max-width:560px){.marquee-track img{height:170px}.marquee-section{padding:16px 0}}
 
-/* ---- 店内の雰囲気スライダー ---- */
-.interior-sec .drink-slider{margin-top:0}
+/* ---- 店内の雰囲気 / 料理とお酒 スライダー ---- */
+.interior-sec .drink-slider,.fd-slider-sec .drink-slider{margin-top:0}
 
 /* ---- reveal ---- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -1481,6 +1481,26 @@ body::after{animation:grain .55s steps(3) infinite}
     <p class="cta-sub">ご予約はホットペッパーグルメより承ります</p>
     <a href="https://www.hotpepper.jp/strJ000670170/" target="_blank" rel="noopener" class="btn-solid"><i class="fas fa-calendar-check"></i> ホットペッパーで予約する</a>
     <div class="cta-follow"><a href="https://www.instagram.com/cantinaakasaka/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i>&nbsp; @cantinaakasaka をフォロー</a></div>
+  </div>
+</section>
+
+<!-- FOOD & DRINK SLIDER (CTAの下) -->
+<section class="section fd-slider-sec" aria-label="料理とお酒">
+  <div class="container">
+    <div class="drink-slider ds-slider reveal" data-interval="4000">
+      <div class="ds-head"><h3>料理とお酒</h3><span class="en">Food &amp; Drink</span></div>
+      <div class="ds-viewport">
+        <figure class="ds-slide active"><img src="assets/img/drink-whisky.jpg" alt="ロックで愉しむウイスキー" loading="lazy"><figcaption><span class="ds-en">Whisky</span><span class="ds-ja">琥珀色の一杯</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img03.jpg" alt="名物ビーフカレー" loading="lazy"><figcaption><span class="ds-en">Beef Curry</span><span class="ds-ja">名物ビーフカレー</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-wine.jpg" alt="グラスで愉しむ赤ワイン" loading="lazy"><figcaption><span class="ds-en">Wine</span><span class="ds-ja">ワイン各種</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img05.jpg" alt="シャルキュトリ盛合せ" loading="lazy"><figcaption><span class="ds-en">Charcuterie</span><span class="ds-ja">シャルキュトリ盛合せ</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-cocktail.jpg" alt="バーカウンターのカクテル" loading="lazy"><figcaption><span class="ds-en">Cocktail</span><span class="ds-ja">カクテル各種</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img07.jpg" alt="牛肉と彩り野菜の炒め" loading="lazy"><figcaption><span class="ds-en">Sizzle</span><span class="ds-ja">牛肉と彩り野菜</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/drink-highball.jpg" alt="よく冷えたハイボール" loading="lazy"><figcaption><span class="ds-en">Highball</span><span class="ds-ja">ハイボール・炭酸</span></figcaption></figure>
+        <figure class="ds-slide"><img src="assets/img/img09.jpg" alt="あさりのボンゴレ" loading="lazy"><figcaption><span class="ds-en">Vongole</span><span class="ds-ja">あさりのボンゴレ</span></figcaption></figure>
+        <div class="ds-dots"></div>
+      </div>
+    </div>
   </div>
 </section>
 
