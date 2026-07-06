@@ -1589,6 +1589,28 @@ body::after{animation:grain .55s steps(3) infinite}
   });
   toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
 
+  /* ===== 省電力モード(電池節約)でも動画を再生 =====
+     iOS の Low Power Mode 等では muted 動画の自動再生がブロックされる。
+     再生が拒否されたらキューに積み、最初のユーザー操作(タップ/スクロール等)で再試行する。 */
+  var __videoQueue=[];
+  function playVideo(v){
+    if(!v) return;
+    var p; try{ p=v.play(); }catch(e){ p=null; }
+    if(p && p.catch){
+      p.catch(function(){ if(__videoQueue.indexOf(v)<0) __videoQueue.push(v); });
+    }
+  }
+  (function(){
+    function retryVideos(){
+      if(!__videoQueue.length) return;
+      var pending=__videoQueue.slice(); __videoQueue.length=0;
+      pending.forEach(function(v){ playVideo(v); });
+    }
+    ['touchstart','pointerdown','mousedown','click','keydown','scroll'].forEach(function(ev){
+      window.addEventListener(ev, retryVideos, {passive:true});
+    });
+  })();
+
   var obs=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target);}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
 
@@ -1964,7 +1986,7 @@ body::after{animation:grain .55s steps(3) infinite}
       if(film){
         var vObs=new IntersectionObserver(function(es){
           es.forEach(function(x){
-            if(x.isIntersecting){ film.play().catch(function(){}); }
+            if(x.isIntersecting){ playVideo(film); }
             else{ film.pause(); }
           });
         },{threshold:0.4});
@@ -1973,7 +1995,7 @@ body::after{animation:grain .55s steps(3) infinite}
         if(sbtn){
           sbtn.addEventListener('click',function(){
             film.muted=!film.muted;
-            if(!film.muted){ film.play().catch(function(){}); }
+            if(!film.muted){ playVideo(film); }
             sbtn.innerHTML = film.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-high"></i>';
           });
         }
@@ -1999,7 +2021,7 @@ body::after{animation:grain .55s steps(3) infinite}
         var v=document.getElementById(id); if(!v) return;
         v.muted=true;
         var o=new IntersectionObserver(function(es){
-          es.forEach(function(x){ if(x.isIntersecting){ v.play().catch(function(){}); } else { v.pause(); } });
+          es.forEach(function(x){ if(x.isIntersecting){ playVideo(v); } else { v.pause(); } });
         },{threshold:0.05});
         o.observe(v);
       });
@@ -2012,7 +2034,7 @@ body::after{animation:grain .55s steps(3) infinite}
         mfilm.muted=true;
         var mObs=new IntersectionObserver(function(es){
           es.forEach(function(x){
-            if(x.isIntersecting){ mfilm.play().catch(function(){}); }
+            if(x.isIntersecting){ playVideo(mfilm); }
             else{ mfilm.pause(); }
           });
         },{threshold:0.4});
